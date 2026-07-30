@@ -108,15 +108,22 @@ export function Contact() {
               <h2 className="font-display text-2xl font-extrabold text-ink">Send us a message</h2>
 
               {user ? (
-                <div className="flex items-center gap-2.5 rounded-2xl bg-secondary/60 px-3.5 py-1.5 border border-border/60">
+                <div className="flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-2.5 py-1 shadow-xs">
                   {user.picture ? (
-                    <img src={user.picture} alt={user.name} className="size-6 rounded-full object-cover" />
-                  ) : null}
-                  <span className="text-xs font-bold text-ink">{user.email}</span>
+                    <img src={user.picture} alt={user.name} className="size-6 rounded-full object-cover ring-1 ring-primary/30" />
+                  ) : (
+                    <span className="grid size-6 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                      {user.name.charAt(0)}
+                    </span>
+                  )}
+                  <span className="max-w-[130px] truncate text-xs font-semibold text-ink" title={`${user.name} (${user.email})`}>
+                    {user.name}
+                  </span>
                   <button
                     type="button"
                     onClick={logout}
-                    className="text-[11px] font-semibold text-muted-foreground hover:text-destructive transition-colors ml-1"
+                    title="Sign out"
+                    className="text-[11px] font-medium text-muted-foreground hover:text-destructive transition-colors ml-0.5"
                   >
                     Sign out
                   </button>
