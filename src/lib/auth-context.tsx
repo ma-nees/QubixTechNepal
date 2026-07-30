@@ -77,10 +77,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await signInWithGoogleOAuth(fullRedirect);
       if (error) {
         console.error("Supabase Google OAuth Error:", error.message);
+        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com";
         const isAdminTarget = destination === "/admin";
         const demoUser: User = {
           name: isAdminTarget ? "Qubix Administrator" : "Google User",
-          email: isAdminTarget ? "qubixtechnepal@gmail.com" : "user@gmail.com",
+          email: isAdminTarget ? adminEmail : "user@gmail.com",
           picture: `https://api.dicebear.com/7.x/initials/svg?seed=${isAdminTarget ? "Admin" : "User"}`,
         };
         setUser(demoUser);
@@ -90,10 +91,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com";
     const isAdminTarget = destination === "/admin";
     const googleUser: User = {
       name: isAdminTarget ? "Qubix Administrator" : "Google User",
-      email: isAdminTarget ? "qubixtechnepal@gmail.com" : "user@gmail.com",
+      email: isAdminTarget ? adminEmail : "user@gmail.com",
       picture: `https://api.dicebear.com/7.x/initials/svg?seed=${isAdminTarget ? "Admin" : "User"}`,
     };
     setUser(googleUser);

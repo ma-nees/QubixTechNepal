@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { ArrowLeft, ShieldCheck, Shield } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { PageShell } from "@/components/site/PageShell";
 import { useAuth } from "@/lib/auth-context";
 import logoUrl from "@/assets/qubix-logo.png";
@@ -27,28 +27,24 @@ export const Route = createFileRoute("/login")({
   }),
 });
 
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com";
+
 function LoginPage() {
   const { user, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const { redirect } = useSearch({ from: "/login" });
 
-  const isAdminRedirect = redirect === "/admin";
-
   // Smart Role & Destination Detection upon sign in
   useEffect(() => {
     if (user) {
-      const isAdminEmail = user.email.toLowerCase().trim() === "qubixtechnepal@gmail.com";
+      const isAdminEmail = user.email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim();
       const target = isAdminEmail ? "/admin" : (redirect || "/contact");
       navigate({ to: target, replace: true });
     }
   }, [user, redirect, navigate]);
 
   const handleGoogleClick = async () => {
-    await loginWithGoogle(redirect || "/contact");
-  };
-
-  const handleAdminClick = async () => {
-    await loginWithGoogle("/admin");
+    await loginWithGoogle(redirect);
   };
 
   return (
@@ -70,18 +66,14 @@ function LoginPage() {
                 Kathmandu · Single Sign-On
               </div>
 
-              <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">
-                {isAdminRedirect ? "Admin Sign In" : "Sign In with Google"}
-              </h1>
+              <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">Sign In with Google</h1>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                {isAdminRedirect
-                  ? "Sign in with qubixtechnepal@gmail.com to access the Admin Portal."
-                  : "Single sign-on for all client & administrator access."}
+                Sign in with your Google account to access Qubix Tech Nepal services.
               </p>
             </div>
 
-            {/* Google Sign-In Only Buttons */}
-            <div className="p-8 text-center space-y-4">
+            {/* Single Clean Google Sign-In Button */}
+            <div className="p-8 text-center space-y-6">
               <button
                 type="button"
                 onClick={handleGoogleClick}
@@ -92,15 +84,6 @@ function LoginPage() {
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                 </svg>
                 Sign in with Google
-              </button>
-
-              <button
-                type="button"
-                onClick={handleAdminClick}
-                className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 text-xs font-bold text-ink shadow-sm transition-all hover:border-primary hover:bg-secondary/40"
-              >
-                <Shield size={15} className="text-primary" />
-                Sign in as Admin (qubixtechnepal@gmail.com)
               </button>
 
               <div className="pt-2 border-t border-border/60 text-center">

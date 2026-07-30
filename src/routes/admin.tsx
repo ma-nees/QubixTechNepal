@@ -98,7 +98,7 @@ const mockProjects = [
   { id: "p4", name: "QubixIQ OCR Parser", category: "AI Automation", status: "Beta Testing", userCount: "5 Clients", uptime: "99.90%" },
 ];
 
-const ADMIN_EMAIL = "qubixtechnepal@gmail.com";
+const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
 
 function AdminPage() {
   const { user, logout } = useAuth();
@@ -133,7 +133,7 @@ function AdminPage() {
               <div className="mt-3 rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-left">
                 <p className="text-xs font-bold text-destructive">Access Denied</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Signed in as <strong className="text-ink">{user.email}</strong>. Only the primary administrator account (<strong>qubixtechnepal@gmail.com</strong>) has permissions to access this portal.
+                  Signed in as <strong className="text-ink">{user.email}</strong>. This account does not have administrator privileges.
                 </p>
                 <button
                   type="button"
@@ -145,7 +145,7 @@ function AdminPage() {
               </div>
             ) : (
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                Sign in with <strong>qubixtechnepal@gmail.com</strong> to access the administrator control panel.
+                Sign in with an authorized administrator account to view the control panel.
               </p>
             )}
 
