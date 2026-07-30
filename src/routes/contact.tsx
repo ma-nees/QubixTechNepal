@@ -81,6 +81,11 @@ export function Contact() {
         text: "Thank you! Your message has been sent. We'll reply to you soon.",
       });
       formRef.current.reset();
+
+      // Automatically dismiss success message after 6 seconds
+      setTimeout(() => {
+        setStatus((prev) => (prev?.type === "success" ? null : prev));
+      }, 6000);
     } catch (err: unknown) {
       console.error("EmailJS Submission Error:", err);
       const errorMsg =
