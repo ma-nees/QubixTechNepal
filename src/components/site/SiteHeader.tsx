@@ -74,9 +74,8 @@ export function SiteHeader() {
               </button>
             </div>
           ) : (
-            <button
-              type="button"
-              onClick={openAuthModal}
+            <Link
+              to="/login"
               className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-semibold text-ink shadow-sm hover:border-primary transition-colors"
             >
               <svg viewBox="0 0 24 24" width="14" height="14">
@@ -98,7 +97,7 @@ export function SiteHeader() {
                 />
               </svg>
               Google Sign in
-            </button>
+            </Link>
           )}
 
           <Link
@@ -163,12 +162,9 @@ export function SiteHeader() {
               </li>
             ) : (
               <li className="mt-2 pt-2 border-t border-border/40">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    openAuthModal();
-                  }}
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
                   className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface py-2.5 text-center text-xs font-bold text-ink shadow-sm"
                 >
                   <svg viewBox="0 0 24 24" width="16" height="16">
@@ -190,7 +186,7 @@ export function SiteHeader() {
                     />
                   </svg>
                   Sign in with Google
-                </button>
+                </Link>
               </li>
             )}
             <li className="mt-1">

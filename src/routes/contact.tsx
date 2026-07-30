@@ -122,9 +122,9 @@ export function Contact() {
                 To prevent spam and verify your email, you must sign in with your Google account before filling out the contact form.
               </p>
 
-              <button
-                type="button"
-                onClick={openAuthModal}
+              <Link
+                to="/login"
+                search={{ redirect: "/contact" }}
                 className="mt-7 inline-flex items-center gap-2.5 rounded-full bg-[#4285F4] px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-[#3367D6]"
               >
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
@@ -132,7 +132,7 @@ export function Contact() {
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                 </svg>
                 Sign in with Google
-              </button>
+              </Link>
             </div>
           ) : (
             <form
