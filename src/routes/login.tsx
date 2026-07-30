@@ -37,7 +37,8 @@ function LoginPage() {
   // Smart Role & Destination Detection upon sign in
   useEffect(() => {
     if (user) {
-      const isAdminEmail = user.email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim();
+      const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+      const isAdminEmail = user.email.toLowerCase().trim() === adminEmail;
       const target = isAdminEmail ? "/admin" : (redirect || "/contact");
       navigate({ to: target, replace: true });
     }

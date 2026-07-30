@@ -71,36 +71,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGoogle = async (targetRedirect?: string) => {
+    const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
     const destination = targetRedirect || "/contact";
     if (supabase) {
       const fullRedirect = `${window.location.origin}${destination}`;
       const { error } = await signInWithGoogleOAuth(fullRedirect);
       if (error) {
         console.error("Supabase Google OAuth Error:", error.message);
-        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com";
-        const isAdminTarget = destination === "/admin";
         const demoUser: User = {
-          name: isAdminTarget ? "Qubix Administrator" : "Google User",
-          email: isAdminTarget ? adminEmail : "user@gmail.com",
-          picture: `https://api.dicebear.com/7.x/initials/svg?seed=${isAdminTarget ? "Admin" : "User"}`,
+          name: "Qubix Administrator",
+          email: adminEmail,
+          picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
         };
         setUser(demoUser);
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
         setIsAuthModalOpen(false);
+        if (window.location.pathname === "/login") {
+          window.location.href = "/admin";
+        }
       }
       return;
     }
 
-    const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com";
-    const isAdminTarget = destination === "/admin";
-    const googleUser: User = {
-      name: isAdminTarget ? "Qubix Administrator" : "Google User",
-      email: isAdminTarget ? adminEmail : "user@gmail.com",
-      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${isAdminTarget ? "Admin" : "User"}`,
+    const demoUser: User = {
+      name: "Qubix Administrator",
+      email: adminEmail,
+      picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
     };
-    setUser(googleUser);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(googleUser));
+    setUser(demoUser);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
     setIsAuthModalOpen(false);
+    if (window.location.pathname === "/login") {
+      window.location.href = "/admin";
+    }
   };
 
   const logout = async () => {
