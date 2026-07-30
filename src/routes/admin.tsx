@@ -173,6 +173,8 @@ function AdminPage() {
   }
 
   useEffect(() => {
+    if (!user || !isAdmin) return;
+
     async function loadMessages() {
       let combined: ContactMessage[] = [];
 

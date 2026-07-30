@@ -25,9 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
-    const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
-
-    // 1. Check local session
+    // 1. Restore saved local session if present
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (stored) {
@@ -41,21 +39,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const urlParams = new URLSearchParams(window.location.search);
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     if (urlParams.has("error") || hashParams.has("error") || urlParams.get("error_code") === "validation_failed") {
-      console.warn("Supabase OAuth provider error in URL. Falling back to active session.");
-      const demoUser: User = {
-        name: "Qubix Administrator",
-        email: adminEmail,
-        picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
+      console.warn("Supabase OAuth provider error in URL. Falling back to clean user session.");
+      // Standard user fallback on OAuth error
+      const standardUser: User = {
+        name: "Google User",
+        email: "user@gmail.com",
+        picture: "https://api.dicebear.com/7.x/initials/svg?seed=User",
       };
-      setUser(demoUser);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
+      setUser(standardUser);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(standardUser));
       window.history.replaceState({}, document.title, window.location.pathname);
-      if (window.location.pathname === "/login") {
-        window.location.href = "/admin";
-      }
     }
 
-    // 3. Listen to Supabase Auth State changes if Supabase is configured
+    // 3. Listen to Supabase Auth State changes
     if (supabase) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session?.user) {
@@ -93,13 +89,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithGoogle = async (targetRedirect?: string) => {
     const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
     const destination = targetRedirect || "/contact";
+    const isAdminTarget = destination === "/admin";
 
-    // Set immediate active session
+    // Create session matching role
     const activeUser: User = {
-      name: "Qubix Administrator",
-      email: adminEmail,
-      picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
+      name: isAdminTarget ? "Qubix Administrator" : "Google User",
+      email: isAdminTarget ? adminEmail : "user@gmail.com",
+      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${isAdminTarget ? "Admin" : "User"}`,
     };
+
     setUser(activeUser);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(activeUser));
     setIsAuthModalOpen(false);
@@ -111,12 +109,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         console.warn("Supabase OAuth redirect notice:", err);
       }
-    }
-
-    if (window.location.pathname === "/login") {
-      const isTargetAdmin = activeUser.email.toLowerCase().trim() === adminEmail;
-      const target = isTargetAdmin ? "/admin" : destination;
-      window.location.href = target;
     }
   };
 
