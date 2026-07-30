@@ -97,6 +97,8 @@ const mockProjects = [
   { id: "p4", name: "QubixIQ OCR Parser", category: "AI Automation", status: "Beta Testing", userCount: "5 Clients", uptime: "99.90%" },
 ];
 
+const ADMIN_EMAIL = "qubixtechnepal@gmail.com";
+
 function AdminPage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -107,8 +109,10 @@ function AdminPage() {
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(mockMessages[0]);
   const [filterStatus, setFilterStatus] = useState<"all" | "new" | "replied" | "archived">("all");
 
-  // If user is not authenticated, render Admin Access Gate
-  if (!user) {
+  const isAdmin = user && user.email.toLowerCase().trim() === ADMIN_EMAIL;
+
+  // If user is not authenticated or not the admin email
+  if (!user || !isAdmin) {
     return (
       <PageShell>
         <section className="hero-wash min-h-[calc(100vh-12rem)] py-16 flex items-center justify-center">
@@ -120,13 +124,30 @@ function AdminPage() {
 
               <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm">
                 <img src={flagUrl} alt="Flag of Nepal" className="h-3.5 w-auto" />
-                Kathmandu HQ · Admin Access
+                Kathmandu HQ · Restricted Admin Access
               </div>
 
               <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">Qubix Admin Portal</h1>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                Authentication required. Please sign in with an authorized Google account to view the administrative control panel.
-              </p>
+
+              {user && !isAdmin ? (
+                <div className="mt-3 rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-left">
+                  <p className="text-xs font-bold text-destructive">Access Denied</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Signed in as <strong className="text-ink">{user.email}</strong>. Only the primary administrator account (<strong>qubixtechnepal@gmail.com</strong>) has permissions to access this portal.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="mt-3 text-xs font-bold text-destructive hover:underline"
+                  >
+                    Sign out & Switch Account
+                  </button>
+                </div>
+              ) : (
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  Sign in with <strong>qubixtechnepal@gmail.com</strong> to access the administrator control panel.
+                </p>
+              )}
 
               <Link
                 to="/login"
@@ -137,7 +158,7 @@ function AdminPage() {
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                 </svg>
-                Sign in with Google
+                Sign in with Admin Account
               </Link>
             </div>
           </div>

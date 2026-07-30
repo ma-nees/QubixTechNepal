@@ -31,7 +31,8 @@ function LoginPage() {
   const navigate = useNavigate();
   const { redirect } = useSearch({ from: "/login" });
 
-  const target = redirect || "/contact";
+  const isAdminEmail = user?.email.toLowerCase().trim() === "qubixtechnepal@gmail.com";
+  const target = isAdminEmail ? "/admin" : (redirect || "/contact");
 
   // If user is already logged in, redirect them immediately
   if (user) {

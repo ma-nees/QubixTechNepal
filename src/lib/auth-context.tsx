@@ -76,11 +76,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await signInWithGoogleOAuth(fullRedirect);
       if (error) {
         console.error("Supabase Google OAuth Error:", error.message);
-        // Fallback demo user if Google provider is not enabled in Supabase console yet
+        // Fallback user for demo testing
+        const isAdminTarget = targetRedirect === "/admin";
         const demoUser: User = {
-          name: "Qubix Verified User",
-          email: "user@gmail.com",
-          picture: "https://api.dicebear.com/7.x/initials/svg?seed=Qubix",
+          name: isAdminTarget ? "Qubix Administrator" : "Qubix Verified User",
+          email: isAdminTarget ? "qubixtechnepal@gmail.com" : "user@gmail.com",
+          picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
         };
         setUser(demoUser);
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
@@ -90,10 +91,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // Fallback demo authentication
+    const isAdminTarget = targetRedirect === "/admin";
     const googleUser: User = {
-      name: "Qubix Verified User",
-      email: "user@gmail.com",
-      picture: "https://api.dicebear.com/7.x/initials/svg?seed=Qubix",
+      name: isAdminTarget ? "Qubix Administrator" : "Qubix Verified User",
+      email: isAdminTarget ? "qubixtechnepal@gmail.com" : "user@gmail.com",
+      picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
     };
     setUser(googleUser);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(googleUser));
