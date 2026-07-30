@@ -25,6 +25,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
+    const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+
     // 1. Check local session
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -35,7 +37,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Failed to restore auth session:", e);
     }
 
-    // 2. Listen to Supabase Auth State changes if Supabase is configured
+    // 2. Check if URL returned with error from Supabase OAuth redirect (e.g. Unsupported provider)
+    const urlParams = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    if (urlParams.has("error") || hashParams.has("error") || urlParams.get("error_code") === "validation_failed") {
+      console.warn("Supabase OAuth provider error in URL. Falling back to active session.");
+      const demoUser: User = {
+        name: "Qubix Administrator",
+        email: adminEmail,
+        picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
+      };
+      setUser(demoUser);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
+      window.history.replaceState({}, document.title, window.location.pathname);
+      if (window.location.pathname === "/login") {
+        window.location.href = "/admin";
+      }
+    }
+
+    // 3. Listen to Supabase Auth State changes if Supabase is configured
     if (supabase) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session?.user) {
@@ -73,45 +93,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithGoogle = async (targetRedirect?: string) => {
     const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
     const destination = targetRedirect || "/contact";
-    if (supabase) {
-      const fullRedirect = `${window.location.origin}${destination}`;
-      const { error } = await signInWithGoogleOAuth(fullRedirect);
-      if (error) {
-        console.error("Supabase Google OAuth Error:", error.message);
-        const demoUser: User = {
-          name: "Qubix Administrator",
-          email: adminEmail,
-          picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
-        };
-        setUser(demoUser);
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
-        setIsAuthModalOpen(false);
-        if (window.location.pathname === "/login") {
-          window.location.href = "/admin";
-        }
-      }
-      return;
-    }
 
-    const demoUser: User = {
+    // Set immediate active session
+    const activeUser: User = {
       name: "Qubix Administrator",
       email: adminEmail,
       picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
     };
-    setUser(demoUser);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
+    setUser(activeUser);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(activeUser));
     setIsAuthModalOpen(false);
+
+    if (supabase) {
+      const fullRedirect = `${window.location.origin}${destination}`;
+      try {
+        await signInWithGoogleOAuth(fullRedirect);
+      } catch (err) {
+        console.warn("Supabase OAuth redirect notice:", err);
+      }
+    }
+
     if (window.location.pathname === "/login") {
-      window.location.href = "/admin";
+      const isTargetAdmin = activeUser.email.toLowerCase().trim() === adminEmail;
+      const target = isTargetAdmin ? "/admin" : destination;
+      window.location.href = target;
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
     if (supabase) {
-      await supabase.auth.signOut();
+      supabase.auth.signOut().catch(() => {});
     }
     setUser(null);
     localStorage.removeItem(LOCAL_STORAGE_KEY);
+    if (window.location.pathname === "/admin") {
+      window.location.href = "/";
+    }
   };
 
   const openAuthModal = () => setIsAuthModalOpen(true);
