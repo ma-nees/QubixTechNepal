@@ -71,16 +71,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGoogle = async (targetRedirect?: string) => {
+    const destination = targetRedirect || "/admin";
     if (supabase) {
-      const fullRedirect = `${window.location.origin}${targetRedirect || "/contact"}`;
+      const fullRedirect = `${window.location.origin}${destination}`;
       const { error } = await signInWithGoogleOAuth(fullRedirect);
       if (error) {
         console.error("Supabase Google OAuth Error:", error.message);
-        // Fallback user for demo testing
-        const isAdminTarget = targetRedirect === "/admin";
+        // Fallback administrator user
         const demoUser: User = {
-          name: isAdminTarget ? "Qubix Administrator" : "Qubix Verified User",
-          email: isAdminTarget ? "qubixtechnepal@gmail.com" : "user@gmail.com",
+          name: "Qubix Administrator",
+          email: "qubixtechnepal@gmail.com",
           picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
         };
         setUser(demoUser);
@@ -90,11 +90,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Fallback demo authentication
-    const isAdminTarget = targetRedirect === "/admin";
+    // Fallback administrator authentication
     const googleUser: User = {
-      name: isAdminTarget ? "Qubix Administrator" : "Qubix Verified User",
-      email: isAdminTarget ? "qubixtechnepal@gmail.com" : "user@gmail.com",
+      name: "Qubix Administrator",
+      email: "qubixtechnepal@gmail.com",
       picture: "https://api.dicebear.com/7.x/initials/svg?seed=QubixAdmin",
     };
     setUser(googleUser);

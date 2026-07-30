@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { PageShell } from "@/components/site/PageShell";
 import { useAuth } from "@/lib/auth-context";
@@ -31,18 +32,17 @@ function LoginPage() {
   const navigate = useNavigate();
   const { redirect } = useSearch({ from: "/login" });
 
-  const isAdminEmail = user?.email.toLowerCase().trim() === "qubixtechnepal@gmail.com";
-  const target = isAdminEmail ? "/admin" : (redirect || "/contact");
-
-  // If user is already logged in, redirect them immediately
-  if (user) {
-    navigate({ to: target, replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      const isAdminEmail = user.email.toLowerCase().trim() === "qubixtechnepal@gmail.com";
+      const target = isAdminEmail ? "/admin" : (redirect || "/contact");
+      navigate({ to: target, replace: true });
+    }
+  }, [user, redirect, navigate]);
 
   const handleGoogleClick = async () => {
-    await loginWithGoogle(target);
-    navigate({ to: target, replace: true });
+    await loginWithGoogle("/admin");
+    navigate({ to: "/admin", replace: true });
   };
 
   return (
