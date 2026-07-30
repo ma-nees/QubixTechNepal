@@ -56,11 +56,23 @@ export function Contact() {
     setLoading(true);
     setStatus(null);
 
+    const formData = new FormData(formRef.current);
+
+    // Strictly enforce the authenticated Google user's email
+    const templateParams = {
+      time: new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }),
+      full_name: (formData.get("full_name") as string) || user.name,
+      email: user.email, // Always uses the logged-in user's authenticated Google email
+      phone: (formData.get("phone") as string) || "",
+      subject: (formData.get("subject") as string) || "",
+      message: (formData.get("message") as string) || "",
+    };
+
     try {
-      const res = await emailjs.sendForm(
+      const res = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        formRef.current,
+        templateParams,
         EMAILJS_PUBLIC_KEY
       );
       console.log("EmailJS Success:", res);
