@@ -18,7 +18,7 @@ export const Route = createFileRoute("/login")({
       { title: "Sign In — Qubix Tech Nepal" },
       {
         name: "description",
-        content: "Sign in with your Google account to access Qubix Tech Nepal forms and services.",
+        content: "Sign in with your Google account to access Qubix Tech Nepal services.",
       },
       { property: "og:title", content: "Sign In — Qubix Tech Nepal" },
       { property: "og:url", content: "/login" },
@@ -32,6 +32,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const { redirect } = useSearch({ from: "/login" });
 
+  // Smart Role & Destination Detection upon sign in
   useEffect(() => {
     if (user) {
       const isAdminEmail = user.email.toLowerCase().trim() === "qubixtechnepal@gmail.com";
@@ -41,8 +42,7 @@ function LoginPage() {
   }, [user, redirect, navigate]);
 
   const handleGoogleClick = async () => {
-    const target = redirect || "/contact";
-    await loginWithGoogle(target);
+    await loginWithGoogle();
   };
 
   return (
@@ -50,7 +50,7 @@ function LoginPage() {
       <section className="hero-wash min-h-[calc(100vh-12rem)] py-12 sm:py-20 flex items-center justify-center">
         <div className="container-page flex flex-col items-center">
           <div className="w-full max-w-md overflow-hidden rounded-3xl border border-border bg-surface shadow-2xl">
-            {/* Header */}
+            {/* Branded Header */}
             <div className="border-b border-border/60 bg-primary/5 p-8 text-center">
               <div className="mx-auto flex items-center justify-center gap-2.5">
                 <img src={logoUrl} alt="Qubix Tech Nepal logo" className="h-10 w-10 object-contain" />
@@ -61,16 +61,16 @@ function LoginPage() {
 
               <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm">
                 <img src={flagUrl} alt="Flag of Nepal" className="h-3.5 w-auto" />
-                Kathmandu · Account Portal
+                Kathmandu · Single Sign-On
               </div>
 
               <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">Sign In with Google</h1>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                Sign in with your Google account to send messages and verify your email.
+                Single sign-on for all client & administrator access.
               </p>
             </div>
 
-            {/* Google Sign In Button Only */}
+            {/* Google Sign-In Only Button */}
             <div className="p-8 text-center space-y-6">
               <button
                 type="button"
