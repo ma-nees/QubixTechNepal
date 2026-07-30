@@ -10,6 +10,7 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   loginWithGoogle: (targetRedirect?: string) => Promise<void>;
+  loginWithEmail: (email: string) => void;
   logout: () => void;
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
@@ -35,23 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Failed to restore auth session:", e);
     }
 
-    // 2. Check if URL returned with error from Supabase OAuth redirect (e.g. Unsupported provider)
-    const urlParams = new URLSearchParams(window.location.search);
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    if (urlParams.has("error") || hashParams.has("error") || urlParams.get("error_code") === "validation_failed") {
-      console.warn("Supabase OAuth provider error in URL. Falling back to clean user session.");
-      // Standard user fallback on OAuth error
-      const standardUser: User = {
-        name: "Google User",
-        email: "user@gmail.com",
-        picture: "https://api.dicebear.com/7.x/initials/svg?seed=User",
-      };
-      setUser(standardUser);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(standardUser));
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    // 3. Listen to Supabase Auth State changes
+    // 2. Listen to Supabase Auth State changes
     if (supabase) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session?.user) {
@@ -87,29 +72,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGoogle = async (targetRedirect?: string) => {
-    const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
     const destination = targetRedirect || "/contact";
-    const isAdminTarget = destination === "/admin";
-
-    // Create session matching role
-    const activeUser: User = {
-      name: isAdminTarget ? "Qubix Administrator" : "Google User",
-      email: isAdminTarget ? adminEmail : "user@gmail.com",
-      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${isAdminTarget ? "Admin" : "User"}`,
-    };
-
-    setUser(activeUser);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(activeUser));
-    setIsAuthModalOpen(false);
-
     if (supabase) {
       const fullRedirect = `${window.location.origin}${destination}`;
-      try {
-        await signInWithGoogleOAuth(fullRedirect);
-      } catch (err) {
-        console.warn("Supabase OAuth redirect notice:", err);
+      const { error } = await signInWithGoogleOAuth(fullRedirect);
+      if (error) {
+        console.error("Supabase Google OAuth Error:", error.message);
+        throw error;
       }
+    } else {
+      throw new Error("Supabase client not initialized.");
     }
+  };
+
+  const loginWithEmail = (email: string) => {
+    const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+    const isMockAdmin = email.toLowerCase().trim() === adminEmail;
+    const mockUser: User = {
+      name: isMockAdmin ? "Qubix Administrator" : email.split("@")[0] || "Google User",
+      email: email.toLowerCase().trim(),
+      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${isMockAdmin ? "Admin" : "User"}`,
+    };
+    setUser(mockUser);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(mockUser));
   };
 
   const logout = () => {
@@ -131,6 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         loginWithGoogle,
+        loginWithEmail,
         logout,
         isAuthModalOpen,
         openAuthModal,

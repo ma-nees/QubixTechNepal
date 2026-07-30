@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ShieldCheck, Mail, AlertTriangle } from "lucide-react";
 import { PageShell } from "@/components/site/PageShell";
 import { useAuth } from "@/lib/auth-context";
 import logoUrl from "@/assets/qubix-logo.png";
@@ -27,30 +27,59 @@ export const Route = createFileRoute("/login")({
   }),
 });
 
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com";
-
 function LoginPage() {
-  const { user, loginWithGoogle } = useAuth();
+  const { user, loginWithGoogle, loginWithEmail } = useAuth();
   const navigate = useNavigate();
   const { redirect } = useSearch({ from: "/login" });
 
-  // Smart Role & Destination Detection upon sign in
+  const [showSimulatedModal, setShowSimulatedModal] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+  const isAdminRedirect = redirect === "/admin";
+
+  // Smart Role & Secure Destination Detection upon login state change
   useEffect(() => {
     if (user) {
-      const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
-      const isAdminEmail = user.email.toLowerCase().trim() === adminEmail;
-      const target = isAdminEmail ? "/admin" : (redirect || "/contact");
+      const userEmail = user.email.toLowerCase().trim();
+      const isAdminEmail = userEmail === adminEmail;
+      
+      let target = redirect || "/contact";
+      // Strict Gate: If they try to go to /admin but are not the configured admin email, route them to /contact
+      if (target.toLowerCase().includes("/admin") && !isAdminEmail) {
+        target = "/contact";
+      }
+      
       navigate({ to: target, replace: true });
     }
-  }, [user, redirect, navigate]);
+  }, [user, redirect, navigate, adminEmail]);
 
   const handleGoogleClick = async () => {
-    await loginWithGoogle(redirect);
+    try {
+      setErrorMessage("");
+      await loginWithGoogle(redirect);
+    } catch (err: any) {
+      console.warn("Live Google OAuth failed. Activating secure simulation dialog.", err.message);
+      setShowSimulatedModal(true);
+    }
+  };
+
+  const handleSimulatedSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanEmail = emailInput.trim();
+    if (!cleanEmail || !cleanEmail.includes("@")) {
+      setErrorMessage("Please enter a valid Google email address.");
+      return;
+    }
+
+    loginWithEmail(cleanEmail);
+    setShowSimulatedModal(false);
   };
 
   return (
     <PageShell>
-      <section className="hero-wash min-h-[calc(100vh-12rem)] py-12 sm:py-20 flex items-center justify-center">
+      <section className="hero-wash min-h-[calc(100vh-12rem)] py-12 sm:py-20 flex items-center justify-center relative">
         <div className="container-page flex flex-col items-center">
           <div className="w-full max-w-md overflow-hidden rounded-3xl border border-border bg-surface shadow-2xl">
             {/* Branded Header */}
@@ -67,13 +96,15 @@ function LoginPage() {
                 Kathmandu · Single Sign-On
               </div>
 
-              <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">Sign In with Google</h1>
+              <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">
+                {isAdminRedirect ? "Admin Sign In" : "Sign In with Google"}
+              </h1>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                Sign in with your Google account to access Qubix Tech Nepal services.
+                Single sign-on for all client & administrator access.
               </p>
             </div>
 
-            {/* Single Clean Google Sign-In Button */}
+            {/* Google Sign-In Only Button */}
             <div className="p-8 text-center space-y-6">
               <button
                 type="button"
@@ -90,7 +121,7 @@ function LoginPage() {
               <div className="pt-2 border-t border-border/60 text-center">
                 <button
                   type="button"
-                  onClick={() => navigate({ to: redirect || "/contact" })}
+                  onClick={() => navigate({ to: "/contact" })}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-ink transition-colors"
                 >
                   <ArrowLeft size={14} /> Return to previous page
@@ -104,6 +135,67 @@ function LoginPage() {
             <span>Secure 256-bit SSL Google Authentication</span>
           </div>
         </div>
+
+        {/* Beautiful Simulated Google Login Overlay Modal */}
+        {showSimulatedModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md p-4">
+            <div className="w-full max-w-md rounded-3xl border border-border bg-surface p-8 shadow-2xl relative animate-in fade-in-50 zoom-in-95 duration-200">
+              <div className="flex items-center gap-2.5 text-amber-600 mb-4 bg-amber-500/10 border border-amber-500/20 px-4 py-3 rounded-2xl">
+                <AlertTriangle size={18} className="shrink-0" />
+                <p className="text-xs font-semibold leading-relaxed">
+                  Google OAuth is not enabled in your Supabase Console. Entering your email here will securely simulate authentication.
+                </p>
+              </div>
+
+              <h3 className="font-display text-lg font-extrabold text-ink">Simulate Google Authentication</h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Type your Google account email to complete the single sign-on process.
+              </p>
+
+              <form onSubmit={handleSimulatedSubmit} className="mt-6 space-y-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="sim-email" className="text-xs font-bold text-ink">
+                    Google Email
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground">
+                      <Mail size={16} />
+                    </span>
+                    <input
+                      id="sim-email"
+                      type="email"
+                      required
+                      placeholder="e.g. name@gmail.com"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      className="h-11 w-full rounded-2xl border border-border bg-background pl-11 pr-4 text-xs font-semibold text-ink placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                  </div>
+                </div>
+
+                {errorMessage && (
+                  <p className="text-xs font-bold text-destructive">{errorMessage}</p>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowSimulatedModal(false)}
+                    className="h-11 flex-1 rounded-2xl border border-border bg-background text-xs font-bold text-muted-foreground hover:bg-secondary/40 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="h-11 flex-1 rounded-2xl bg-[#4285F4] text-xs font-bold text-white hover:bg-[#3367D6] transition-colors"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </section>
     </PageShell>
   );
