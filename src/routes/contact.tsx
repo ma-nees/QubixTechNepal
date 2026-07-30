@@ -104,31 +104,8 @@ export function Contact() {
             onSubmit={handleSubmit}
             className="rounded-3xl border border-border bg-surface p-6 shadow-soft sm:p-8"
           >
-            <div className="flex items-center justify-between border-b border-border/60 pb-4">
+            <div className="border-b border-border/60 pb-4">
               <h2 className="font-display text-2xl font-extrabold text-ink">Send us a message</h2>
-
-              {user ? (
-                <div className="flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-2.5 py-1 shadow-xs">
-                  {user.picture ? (
-                    <img src={user.picture} alt={user.name} className="size-6 rounded-full object-cover ring-1 ring-primary/30" />
-                  ) : (
-                    <span className="grid size-6 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                      {user.name.charAt(0)}
-                    </span>
-                  )}
-                  <span className="max-w-[130px] truncate text-xs font-semibold text-ink" title={`${user.name} (${user.email})`}>
-                    {user.name}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={logout}
-                    title="Sign out"
-                    className="text-[11px] font-medium text-muted-foreground hover:text-destructive transition-colors ml-0.5"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              ) : null}
             </div>
 
             {/* Hidden field for {{time}} variable in EmailJS template */}

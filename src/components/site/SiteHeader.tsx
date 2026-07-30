@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
 import logoUrl from "@/assets/qubix-logo.png";
 
 const nav = [
@@ -13,12 +14,10 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-import { useAuth } from "@/lib/auth-context";
-
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { user, openAuthModal, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -56,22 +55,34 @@ export function SiteHeader() {
           ))}
 
           {user ? (
-            <div className="ml-2 flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 shadow-sm">
-              {user.picture ? (
-                <img src={user.picture} alt={user.name} className="size-6 rounded-full object-cover" />
-              ) : (
-                <span className="grid size-6 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {user.name.charAt(0)}
-                </span>
-              )}
-              <span className="max-w-[100px] truncate text-xs font-semibold text-ink">{user.name}</span>
+            <div className="relative group ml-2">
               <button
                 type="button"
-                onClick={logout}
-                className="ml-1 text-[11px] font-semibold text-muted-foreground hover:text-destructive transition-colors"
+                className="flex items-center gap-1.5 rounded-full border border-border bg-surface p-1 pr-2.5 shadow-sm transition-all hover:border-primary"
+                title={`${user.name} (${user.email})`}
               >
-                Sign out
+                {user.picture ? (
+                  <img src={user.picture} alt={user.name} className="size-7 rounded-full object-cover ring-2 ring-primary/20" />
+                ) : (
+                  <span className="grid size-7 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                    {user.name.charAt(0)}
+                  </span>
+                )}
+                <span className="max-w-[90px] truncate text-xs font-bold text-ink">{user.name.split(" ")[0]}</span>
               </button>
+
+              {/* Hover Profile Dropdown */}
+              <div className="absolute right-0 top-full mt-2 hidden w-48 rounded-2xl border border-border bg-surface p-3 shadow-xl group-hover:block transition-all z-50">
+                <p className="truncate text-xs font-bold text-ink">{user.name}</p>
+                <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-xl bg-destructive/10 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 transition-colors"
+                >
+                  <LogOut size={12} /> Sign out
+                </button>
+              </div>
             </div>
           ) : null}
 
