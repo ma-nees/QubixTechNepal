@@ -41,8 +41,8 @@ function LoginPage() {
   }, [user, redirect, navigate]);
 
   const handleGoogleClick = async () => {
-    await loginWithGoogle("/admin");
-    navigate({ to: "/admin", replace: true });
+    const target = redirect || "/contact";
+    await loginWithGoogle(target);
   };
 
   return (
