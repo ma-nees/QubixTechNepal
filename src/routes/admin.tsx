@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import {
   Users,
   Mail,
@@ -171,6 +172,93 @@ function AdminPage() {
     );
   }
 
+  useEffect(() => {
+    async function loadMessages() {
+      let combined: ContactMessage[] = [];
+
+      if (supabase) {
+        try {
+          const { data, error } = await supabase
+            .from("messages")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (data && !error && data.length > 0) {
+            const dbMsgs: ContactMessage[] = data.map((item: any) => ({
+              id: String(item.id || `db-${Math.random()}`),
+              name: item.full_name || item.name || "Inquirer",
+              email: item.email || "",
+              phone: item.phone || "",
+              subject: item.subject || "Contact Form Inquiry",
+              message: item.message || "",
+              date: item.created_at
+                ? new Date(item.created_at).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })
+                : "Just now",
+              status: (item.status as "new" | "replied" | "archived") || "new",
+            }));
+            combined = [...dbMsgs];
+          }
+        } catch (dbErr) {
+          console.warn("Supabase fetch notice:", dbErr);
+        }
+      }
+
+      // Load local DB fallback
+      try {
+        const localSubmitted = JSON.parse(localStorage.getItem("qubix_submitted_messages") || "[]");
+        if (localSubmitted.length > 0) {
+          const existingKeys = new Set(combined.map((m) => `${m.email}-${m.message.slice(0, 15)}`));
+          for (const lm of localSubmitted) {
+            const key = `${lm.email}-${lm.message.slice(0, 15)}`;
+            if (!existingKeys.has(key)) {
+              combined.push(lm);
+            }
+          }
+        }
+      } catch (lErr) {
+        console.error("Local storage DB load error:", lErr);
+      }
+
+      if (combined.length === 0) {
+        combined = mockMessages;
+      }
+
+      setMessages(combined);
+      setSelectedMessage(combined[0]);
+    }
+
+    loadMessages();
+
+    // Subscribe to realtime DB changes
+    if (supabase) {
+      const channel = supabase
+        .channel("admin_messages_live")
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "messages" },
+          (payload) => {
+            const newRow = payload.new;
+            const newMsg: ContactMessage = {
+              id: String(newRow.id || `live-${Date.now()}`),
+              name: newRow.full_name || newRow.name || "Inquirer",
+              email: newRow.email || "",
+              phone: newRow.phone || "",
+              subject: newRow.subject || "Contact Form Inquiry",
+              message: newRow.message || "",
+              date: new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }),
+              status: "new",
+            };
+            setMessages((prev) => [newMsg, ...prev]);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, []);
+
   const filteredMessages = messages.filter((msg) => {
     const matchesSearch =
       msg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -180,12 +268,28 @@ function AdminPage() {
     return matchesSearch && matchesFilter;
   });
 
-  const toggleStatus = (id: string, newStatus: "new" | "replied" | "archived") => {
+  const toggleStatus = async (id: string, newStatus: "new" | "replied" | "archived") => {
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, status: newStatus } : m))
     );
     if (selectedMessage?.id === id) {
       setSelectedMessage((prev) => (prev ? { ...prev, status: newStatus } : null));
+    }
+
+    if (supabase) {
+      try {
+        await supabase.from("messages").update({ status: newStatus }).eq("id", id);
+      } catch (e) {
+        console.warn("Supabase status update error:", e);
+      }
+    }
+
+    try {
+      const localList = JSON.parse(localStorage.getItem("qubix_submitted_messages") || "[]");
+      const updated = localList.map((m: ContactMessage) => (m.id === id ? { ...m, status: newStatus } : m));
+      localStorage.setItem("qubix_submitted_messages", JSON.stringify(updated));
+    } catch (e) {
+      console.error("Local status update error:", e);
     }
   };
 

@@ -5,6 +5,7 @@ import { Clock, Facebook, Github, Linkedin, Mail, MapPin, Phone, Send, Loader2, 
 import { PageShell, PageHero, SectionHeading, CtaBand } from "@/components/site/PageShell";
 import { Reveal } from "@/components/site/Reveal";
 import { useAuth } from "@/lib/auth-context";
+import { supabase } from "@/lib/supabase";
 import flagUrl from "@/assets/nepal-flag.gif";
 
 export const Route = createFileRoute("/contact")({
@@ -76,6 +77,43 @@ export function Contact() {
         EMAILJS_PUBLIC_KEY
       );
       console.log("EmailJS Success:", res);
+      // 1. Insert into Supabase DB table "messages"
+      if (supabase) {
+        try {
+          await supabase.from("messages").insert([
+            {
+              full_name: templateParams.full_name,
+              email: templateParams.email,
+              phone: templateParams.phone,
+              subject: templateParams.subject || "Contact Inquiry",
+              message: templateParams.message,
+              status: "new",
+              created_at: new Date().toISOString(),
+            },
+          ]);
+        } catch (dbErr) {
+          console.warn("Supabase DB Insert notice:", dbErr);
+        }
+      }
+
+      // 2. Save to local storage DB for instant sync fallback
+      try {
+        const localList = JSON.parse(localStorage.getItem("qubix_submitted_messages") || "[]");
+        localList.unshift({
+          id: `msg-${Date.now()}`,
+          name: templateParams.full_name,
+          email: templateParams.email,
+          phone: templateParams.phone,
+          subject: templateParams.subject || "Contact Inquiry",
+          message: templateParams.message,
+          date: new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }),
+          status: "new",
+        });
+        localStorage.setItem("qubix_submitted_messages", JSON.stringify(localList));
+      } catch (lErr) {
+        console.error("Local DB error:", lErr);
+      }
+
       setStatus({
         type: "success",
         text: "Thank you! Your message has been sent. We'll reply to you soon.",
