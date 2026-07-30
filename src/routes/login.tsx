@@ -8,9 +8,9 @@ import flagUrl from "@/assets/nepal-flag.gif";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
-  validateSearch: (search: Record<string, unknown>) => {
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } => {
     return {
-      redirect: typeof search.redirect === "string" ? search.redirect : "/contact",
+      redirect: typeof search.redirect === "string" ? search.redirect : undefined,
     };
   },
   head: () => ({
@@ -35,9 +35,11 @@ function LoginPage() {
   const [emailInput, setEmailInput] = useState("");
   const [nameInput, setNameInput] = useState("");
 
+  const target = redirect || "/contact";
+
   // If user is already logged in, redirect them immediately
   if (user) {
-    navigate({ to: redirect as string, replace: true });
+    navigate({ to: target, replace: true });
     return null;
   }
 
@@ -50,7 +52,7 @@ function LoginPage() {
       email: email.includes("@") ? email : `${email}@gmail.com`,
       picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
     });
-    navigate({ to: redirect as string, replace: true });
+    navigate({ to: target, replace: true });
   };
 
   return (
