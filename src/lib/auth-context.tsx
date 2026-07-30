@@ -9,7 +9,7 @@ export interface User {
 
 interface AuthContextType {
   user: User | null;
-  loginWithGoogle: (customUser?: { name: string; email: string; picture?: string }) => void;
+  loginWithGoogle: (targetRedirect?: string) => Promise<void>;
   logout: () => void;
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
