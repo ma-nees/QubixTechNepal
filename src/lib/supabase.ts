@@ -1,23 +1,26 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+const supabaseUrl =
+  import.meta.env.VITE_SUPABASE_URL ||
+  "https://yayoyrouufztwxygsuph.supabase.co";
+const supabaseAnonKey =
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  "sb_publishable_PjWnv-FaVMWAZjVcyOF6Vw_hfP93zN5";
 
-export const supabase =
-  supabaseUrl && supabaseAnonKey
-    ? createClient(supabaseUrl, supabaseAnonKey)
-    : null;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function signInWithGoogleOAuth(redirectToUrl?: string) {
   if (!supabase) {
-    console.warn("Supabase credentials not configured in .env yet.");
-    return { error: new Error("Supabase credentials missing in .env") };
+    console.warn("Supabase credentials missing.");
+    return { error: new Error("Supabase credentials missing") };
   }
+
+  const redirectTarget = redirectToUrl || `${window.location.origin}/contact`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: redirectToUrl || window.location.origin + "/contact",
+      redirectTo: redirectTarget,
     },
   });
 

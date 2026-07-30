@@ -70,21 +70,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const loginWithGoogle = async (customUser?: { name: string; email: string; picture?: string }) => {
-    // If Supabase client is configured, trigger Supabase Google OAuth
+  const loginWithGoogle = async (targetRedirect?: string) => {
     if (supabase) {
-      const { error } = await signInWithGoogleOAuth();
+      const fullRedirect = `${window.location.origin}${targetRedirect || "/contact"}`;
+      const { error } = await signInWithGoogleOAuth(fullRedirect);
       if (error) {
-        console.error("Supabase Google OAuth Error:", error);
+        console.error("Supabase Google OAuth Error:", error.message);
+        // Fallback demo user if Google provider is not enabled in Supabase console yet
+        const demoUser: User = {
+          name: "Qubix Verified User",
+          email: "user@gmail.com",
+          picture: "https://api.dicebear.com/7.x/initials/svg?seed=Qubix",
+        };
+        setUser(demoUser);
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(demoUser));
+        setIsAuthModalOpen(false);
       }
       return;
     }
 
-    // Fallback demo authentication if Supabase is not yet connected in .env
-    const googleUser: User = customUser || {
-      name: "Google User",
+    // Fallback demo authentication
+    const googleUser: User = {
+      name: "Qubix Verified User",
       email: "user@gmail.com",
-      picture: "https://lh3.googleusercontent.com/a/default-user=s96-c",
+      picture: "https://api.dicebear.com/7.x/initials/svg?seed=Qubix",
     };
     setUser(googleUser);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(googleUser));

@@ -39,8 +39,8 @@ function LoginPage() {
     return null;
   }
 
-  const handleGoogleClick = () => {
-    loginWithGoogle();
+  const handleGoogleClick = async () => {
+    await loginWithGoogle(target);
     navigate({ to: target, replace: true });
   };
 
