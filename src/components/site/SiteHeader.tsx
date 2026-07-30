@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
+import { Menu, X, LogOut, UserCircle2 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import logoUrl from "@/assets/qubix-logo.png";
 
@@ -58,27 +58,25 @@ export function SiteHeader() {
             <div className="relative group ml-2">
               <button
                 type="button"
-                className="flex items-center gap-1.5 rounded-full border border-border bg-surface p-1 pr-2.5 shadow-sm transition-all hover:border-primary"
+                className="grid size-9 place-items-center rounded-full border border-border bg-surface text-ink shadow-xs transition-all hover:border-primary hover:bg-secondary/40"
                 title={`${user.name} (${user.email})`}
               >
-                {user.picture ? (
-                  <img src={user.picture} alt={user.name} className="size-7 rounded-full object-cover ring-2 ring-primary/20" />
-                ) : (
-                  <span className="grid size-7 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    {user.name.charAt(0)}
-                  </span>
-                )}
-                <span className="max-w-[90px] truncate text-xs font-bold text-ink">{user.name.split(" ")[0]}</span>
+                <UserCircle2 size={20} className="text-primary" />
               </button>
 
               {/* Hover Profile Dropdown */}
               <div className="absolute right-0 top-full mt-2 hidden w-48 rounded-2xl border border-border bg-surface p-3 shadow-xl group-hover:block transition-all z-50">
-                <p className="truncate text-xs font-bold text-ink">{user.name}</p>
-                <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
+                <div className="flex items-center gap-2 pb-2 border-b border-border/50">
+                  <UserCircle2 size={18} className="text-primary shrink-0" />
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-bold text-ink">{user.name}</p>
+                    <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={logout}
-                  className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-xl bg-destructive/10 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 transition-colors"
+                  className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl bg-destructive/10 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 transition-colors"
                 >
                   <LogOut size={12} /> Sign out
                 </button>
@@ -123,13 +121,7 @@ export function SiteHeader() {
             {user ? (
               <li className="mt-2 pt-2 border-t border-border/40 flex items-center justify-between px-3.5 py-2">
                 <div className="flex items-center gap-2.5">
-                  {user.picture ? (
-                    <img src={user.picture} alt={user.name} className="size-7 rounded-full object-cover" />
-                  ) : (
-                    <span className="grid size-7 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                      {user.name.charAt(0)}
-                    </span>
-                  )}
+                  <UserCircle2 size={22} className="text-primary shrink-0" />
                   <div className="min-w-0">
                     <p className="truncate text-xs font-bold text-ink">{user.name}</p>
                     <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
