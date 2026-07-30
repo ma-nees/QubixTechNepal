@@ -87,7 +87,7 @@ function LoginPage() {
               <div className="pt-2 border-t border-border/60 text-center">
                 <button
                   type="button"
-                  onClick={() => navigate({ to: target })}
+                  onClick={() => navigate({ to: redirect || "/contact" })}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-ink transition-colors"
                 >
                   <ArrowLeft size={14} /> Return to previous page
