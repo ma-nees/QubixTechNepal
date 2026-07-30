@@ -154,73 +154,10 @@ function Portfolio() {
         subtitle="Explore our flagship SaaS platforms, custom enterprise systems, fintech tools, and AI solutions engineered in Kathmandu."
       />
 
-      {/* Flagship Highlight Section */}
-      <section className="container-page py-12 sm:py-16">
-        <Reveal>
-          <div className="hero-wash overflow-hidden rounded-2xl border border-border bg-surface shadow-soft sm:rounded-3xl">
-            <div className="grid gap-8 p-6 sm:p-12 lg:grid-cols-2 lg:items-center">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold text-accent-foreground">
-                  ⭐ Flagship Product
-                </span>
-                <h2 className="mt-4 font-display text-3xl font-extrabold text-ink sm:text-4xl">DriveSiksha</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  The complete SaaS operating system for driving institutes in Nepal. Enrolments, scheduling, instructor rosters, vehicle management, licence-exam prep and payments — all in one calm, reliable platform.
-                </p>
-                <ul className="mt-6 grid gap-2.5 text-xs text-muted-foreground sm:mt-7 sm:grid-cols-2 sm:gap-3 sm:text-sm">
-                  {items[0].highlights?.map((h) => (
-                    <li key={h} className="flex items-start gap-2">
-                      <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:gap-3">
-                  <a
-                    href="https://wa.me/9779866291003?text=Hello%20Qubix%20Tech%20Nepal!%20I'd%20like%20a%20demo%20of%20DriveSiksha."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-                  >
-                    Request a Demo <ArrowRight size={16} />
-                  </a>
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-center text-sm font-semibold text-ink transition-colors hover:border-primary"
-                  >
-                    Talk to Sales
-                  </Link>
-                </div>
-              </div>
 
-              <div className="grid gap-3 sm:gap-4">
-                {[
-                  [Users, "Student Lifecycle", "Register, track & manage students across all institute branches."],
-                  [GraduationCap, "Instructor Rosters", "Automated scheduling, vehicle assignment & instructor feedback."],
-                  [CreditCard, "Invoicing & Payments", "Installments, online receipts & clear bank reconciliation."],
-                  [LineChart, "Branch Analytics", "Pass rates, vehicle utilisation & revenue insights at a glance."],
-                ].map(([Icon, t, c], i) => {
-                  const I = Icon as typeof Users;
-                  return (
-                    <Reveal key={t as string} delay={i * 60}>
-                      <div className="lift flex gap-3.5 rounded-xl border border-border bg-background p-4 sm:rounded-2xl sm:p-5">
-                        <I size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-                        <div className="min-w-0">
-                          <h3 className="font-display text-sm font-bold text-ink sm:text-base">{t as string}</h3>
-                          <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{c as string}</p>
-                        </div>
-                      </div>
-                    </Reveal>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </Reveal>
-      </section>
 
       {/* Category Tabs & Work Grid */}
-      <section className="container-page pb-16 sm:pb-20">
+      <section className="container-page py-16 sm:py-20">
         <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-display text-2xl font-extrabold text-ink sm:text-3xl">All Products & Portfolio Systems</h2>
