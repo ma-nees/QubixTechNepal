@@ -114,56 +114,60 @@ function AdminPage() {
   // If user is not authenticated or not the admin email
   if (!user || !isAdmin) {
     return (
-      <PageShell>
-        <section className="hero-wash min-h-[calc(100vh-12rem)] py-16 flex items-center justify-center">
-          <div className="container-page flex flex-col items-center text-center">
-            <div className="w-full max-w-md rounded-3xl border border-border bg-surface p-8 shadow-2xl sm:p-10">
-              <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20 text-primary">
-                <ShieldCheck size={28} />
-              </div>
+      <main className="min-h-screen bg-background text-foreground flex items-center justify-center py-16">
+        <div className="container-page flex flex-col items-center text-center">
+          <div className="w-full max-w-md rounded-3xl border border-border bg-surface p-8 shadow-2xl sm:p-10">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20 text-primary">
+              <ShieldCheck size={28} />
+            </div>
 
-              <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm">
-                <img src={flagUrl} alt="Flag of Nepal" className="h-3.5 w-auto" />
-                Kathmandu HQ · Restricted Admin Access
-              </div>
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm">
+              <img src={flagUrl} alt="Flag of Nepal" className="h-3.5 w-auto" />
+              Kathmandu HQ · Restricted Admin Access
+            </div>
 
-              <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">Qubix Admin Portal</h1>
+            <h1 className="mt-4 font-display text-2xl font-extrabold text-ink">Qubix Admin Portal</h1>
 
-              {user && !isAdmin ? (
-                <div className="mt-3 rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-left">
-                  <p className="text-xs font-bold text-destructive">Access Denied</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Signed in as <strong className="text-ink">{user.email}</strong>. Only the primary administrator account (<strong>qubixtechnepal@gmail.com</strong>) has permissions to access this portal.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={logout}
-                    className="mt-3 text-xs font-bold text-destructive hover:underline"
-                  >
-                    Sign out & Switch Account
-                  </button>
-                </div>
-              ) : (
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  Sign in with <strong>qubixtechnepal@gmail.com</strong> to access the administrator control panel.
+            {user && !isAdmin ? (
+              <div className="mt-3 rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-left">
+                <p className="text-xs font-bold text-destructive">Access Denied</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Signed in as <strong className="text-ink">{user.email}</strong>. Only the primary administrator account (<strong>qubixtechnepal@gmail.com</strong>) has permissions to access this portal.
                 </p>
-              )}
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="mt-3 text-xs font-bold text-destructive hover:underline"
+                >
+                  Sign out & Switch Account
+                </button>
+              </div>
+            ) : (
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Sign in with <strong>qubixtechnepal@gmail.com</strong> to access the administrator control panel.
+              </p>
+            )}
 
-              <Link
-                to="/login"
-                search={{ redirect: "/admin" }}
-                className="mt-7 inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-2xl bg-[#4285F4] text-white text-sm font-bold shadow-md transition-all hover:bg-[#3367D6]"
-              >
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                </svg>
-                Sign in with Admin Account
+            <Link
+              to="/login"
+              search={{ redirect: "/admin" }}
+              className="mt-7 inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-2xl bg-[#4285F4] text-white text-sm font-bold shadow-md transition-all hover:bg-[#3367D6]"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              </svg>
+              Sign in with Admin Account
+            </Link>
+
+            <div className="mt-6 border-t border-border/60 pt-4">
+              <Link to="/" className="text-xs font-semibold text-muted-foreground hover:text-ink">
+                ← Return to Public Website
               </Link>
             </div>
           </div>
-        </section>
-      </PageShell>
+        </div>
+      </main>
     );
   }
 
@@ -186,7 +190,7 @@ function AdminPage() {
   };
 
   return (
-    <PageShell>
+    <main className="min-h-screen bg-background text-foreground">
       <section className="container-page py-10 sm:py-14">
         {/* Top Header Bar */}
         <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
@@ -204,6 +208,12 @@ function AdminPage() {
           </div>
 
           <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-2 text-xs font-semibold text-muted-foreground hover:text-ink transition-colors"
+            >
+              Exit to Main Site →
+            </Link>
             <button
               type="button"
               onClick={logout}
@@ -507,6 +517,6 @@ function AdminPage() {
           </div>
         )}
       </section>
-    </PageShell>
+    </main>
   );
 }
