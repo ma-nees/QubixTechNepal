@@ -33,7 +33,7 @@ export function SiteHeader() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled || open
-          ? "border-b border-border bg-background/85 backdrop-blur-xl"
+          ? "border-b border-border bg-white/60 backdrop-blur-xl"
           : "border-b border-transparent"
       }`}
     >

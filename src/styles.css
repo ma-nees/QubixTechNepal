@@ -89,7 +89,8 @@
   }
 
   body {
-    background-color: var(--color-background);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4f9 50%, #e1e9f4 100%);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
