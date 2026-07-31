@@ -38,14 +38,16 @@ export function SiteHeader() {
       }`}
     >
       <div className="container-page flex items-center justify-between gap-3 py-2.5 sm:py-3">
-        <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-2.5" aria-label="Qubix Tech Nepal home">
-          <img src={logoUrl} alt="Qubix Tech Nepal logo" className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" />
-          <span className="truncate font-display text-sm font-extrabold tracking-tight text-ink sm:text-base">
-            Qubix Tech Nepal
-          </span>
-        </Link>
+        <div className="flex lg:flex-1">
+          <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-2.5" aria-label="Qubix Tech Nepal home">
+            <img src={logoUrl} alt="Qubix Tech Nepal logo" className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" />
+            <span className="truncate font-display text-sm font-extrabold tracking-tight text-ink sm:text-base">
+              Qubix Tech Nepal
+            </span>
+          </Link>
+        </div>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Main" className="hidden lg:flex items-center justify-center gap-1">
           {nav.map((item) => (
             <Link
               key={item.to}
@@ -56,7 +58,9 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+        </nav>
 
+        <div className="flex items-center gap-2 lg:flex-1 justify-end">
           {user ? (
             <div className="relative group ml-2">
               <button
@@ -97,22 +101,22 @@ export function SiteHeader() {
 
           <Link
             to="/contact"
-            className="ml-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+            className="hidden sm:inline-flex ml-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Start a project
           </Link>
-        </nav>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="grid size-10 place-items-center rounded-full border border-border text-ink sm:size-11 lg:hidden"
-        >
-          {open ? <X size={18} /> : <Menu size={18} />}
-        </button>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="grid size-10 place-items-center rounded-full border border-border text-ink sm:size-11 lg:hidden"
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </div>
 
       {open ? (
