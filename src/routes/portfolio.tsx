@@ -154,8 +154,6 @@ function Portfolio() {
           ))}
         </ul>
       </section>
-
-      <CtaBand />
     </PageShell>
   );
 }
