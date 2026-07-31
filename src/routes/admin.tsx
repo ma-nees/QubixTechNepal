@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, Navigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import {
@@ -150,8 +150,7 @@ function AdminPage() {
 
   // If the auth state is resolved and no user is found, redirect to login
   if (!user) {
-    navigate({ to: "/login", search: { redirect: "/admin" }, replace: true });
-    return null;
+    return <Navigate to="/login" search={{ redirect: "/admin" }} replace />;
   }
 
   const isAdmin = user.email.toLowerCase().trim() === ADMIN_EMAIL;
@@ -159,8 +158,7 @@ function AdminPage() {
   // If the user is not the configured admin, redirect away
   if (!isAdmin) {
     // Optionally navigate to a safe page
-    navigate({ to: "/contact", replace: true });
-    return null;
+    return <Navigate to="/contact" replace />;
   }
 
   // Ensure data loads on component mount regardless of auth state
