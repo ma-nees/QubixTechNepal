@@ -92,7 +92,7 @@ const SOCIAL_PLATFORMS = [
 ];
 
 function AdminPage() {
-  const { user, logout } = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<"overview" | "inbox" | "projects" | "social" | "settings">("overview");
@@ -139,7 +139,16 @@ function AdminPage() {
   const [deletingSocialLinkId, setDeletingSocialLinkId] = useState<string | null>(null);
   const [deleteSocialLinkLoading, setDeleteSocialLinkLoading] = useState(false);
 
-  // If the auth state is not yet resolved, redirect to login with redirect back to admin
+  // If still loading session from Supabase, show a loading spinner
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-ink">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // If the auth state is resolved and no user is found, redirect to login
   if (!user) {
     navigate({ to: "/login", search: { redirect: "/admin" }, replace: true });
     return null;

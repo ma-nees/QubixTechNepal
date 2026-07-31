@@ -9,6 +9,7 @@ export interface User {
 
 interface AuthContextType {
   user: User | null;
+  isLoading: boolean;
   loginWithGoogle: (targetRedirect?: string) => Promise<void>;
   loginWithEmail: (email: string) => void;
   logout: () => void;
@@ -23,6 +24,7 @@ const LOCAL_STORAGE_KEY = "qubix_user_session";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
@@ -48,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(gUser);
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gUser));
         }
+        setIsLoading(false);
       });
 
       const {
@@ -65,9 +68,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(null);
           localStorage.removeItem(LOCAL_STORAGE_KEY);
         }
+        setIsLoading(false);
       });
 
       return () => subscription.unsubscribe();
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -115,6 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        isLoading,
         loginWithGoogle,
         loginWithEmail,
         logout,
