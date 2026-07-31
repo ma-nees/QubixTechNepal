@@ -139,27 +139,7 @@ function AdminPage() {
   const [deletingSocialLinkId, setDeletingSocialLinkId] = useState<string | null>(null);
   const [deleteSocialLinkLoading, setDeleteSocialLinkLoading] = useState(false);
 
-  // If still loading session from Supabase, show a loading spinner
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background text-ink">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  // If the auth state is resolved and no user is found, redirect to login
-  if (!user) {
-    return <Navigate to="/login" search={{ redirect: "/admin" }} replace />;
-  }
-
-  const isAdmin = user.email.toLowerCase().trim() === ADMIN_EMAIL;
-
-  // If the user is not the configured admin, redirect away
-  if (!isAdmin) {
-    // Optionally navigate to a safe page
-    return <Navigate to="/contact" replace />;
-  }
+  const isAdmin = user?.email?.toLowerCase().trim() === ADMIN_EMAIL;
 
   // Ensure data loads on component mount regardless of auth state
 useEffect(() => {
@@ -287,6 +267,26 @@ useEffect(() => {
       };
     }
   }, [user, isAdmin]);
+
+  // If still loading session from Supabase, show a loading spinner
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-ink">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // If the auth state is resolved and no user is found, redirect to login
+  if (!user) {
+    return <Navigate to="/login" search={{ redirect: "/admin" }} replace />;
+  }
+
+  // If the user is not the configured admin, redirect away
+  if (!isAdmin) {
+    // Optionally navigate to a safe page
+    return <Navigate to="/contact" replace />;
+  }
 
   // Open slide-in to add a new project
   const openAddProjectModal = () => {
