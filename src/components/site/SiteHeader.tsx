@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, LogOut, UserCircle2 } from "lucide-react";
+import { Menu, X, LogOut, UserCircle2, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import logoUrl from "@/assets/qubix-logo.png";
 
@@ -18,6 +18,9 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { user, logout } = useAuth();
+  
+  const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+  const isAdmin = user?.email.toLowerCase().trim() === adminEmail;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -73,6 +76,14 @@ export function SiteHeader() {
                     <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
                   </div>
                 </div>
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary/10 py-1.5 text-xs font-bold text-primary hover:bg-primary/20 transition-colors"
+                  >
+                    <ShieldCheck size={12} /> Admin Panel
+                  </Link>
+                )}
                 <button
                   type="button"
                   onClick={logout}
@@ -119,24 +130,37 @@ export function SiteHeader() {
               </li>
             ))}
             {user ? (
-              <li className="mt-2 pt-2 border-t border-border/40 flex items-center justify-between px-3.5 py-2">
-                <div className="flex items-center gap-2.5">
-                  <UserCircle2 size={22} className="text-primary shrink-0" />
-                  <div className="min-w-0">
-                    <p className="truncate text-xs font-bold text-ink">{user.name}</p>
-                    <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
+              <li className="mt-2 pt-2 border-t border-border/40 px-3.5 py-2">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2.5">
+                    <UserCircle2 size={22} className="text-primary shrink-0" />
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-bold text-ink">{user.name}</p>
+                      <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
+                    </div>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    logout();
-                    setOpen(false);
-                  }}
-                  className="rounded-lg bg-destructive/10 px-2.5 py-1 text-xs font-semibold text-destructive hover:bg-destructive/20"
-                >
-                  Sign out
-                </button>
+                <div className="flex flex-col gap-2">
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setOpen(false)}
+                      className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary/10 px-2.5 py-2 text-xs font-semibold text-primary hover:bg-primary/20"
+                    >
+                      <ShieldCheck size={14} /> Admin Dashboard
+                    </Link>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      setOpen(false);
+                    }}
+                    className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-destructive/10 px-2.5 py-2 text-xs font-semibold text-destructive hover:bg-destructive/20"
+                  >
+                    <LogOut size={14} /> Sign out
+                  </button>
+                </div>
               </li>
             ) : null}
             <li className="mt-1">

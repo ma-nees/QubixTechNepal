@@ -49,6 +49,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           };
           setUser(gUser);
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gUser));
+
+          // Clear hash and force route to admin if admin logged in and stuck on hash URL
+          if (window.location.hash.includes("access_token")) {
+            window.history.replaceState(null, "", window.location.pathname + window.location.search);
+            const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+            if (gUser.email.toLowerCase().trim() === adminEmail && window.location.pathname !== "/admin") {
+              window.location.href = "/admin";
+            }
+          }
         }
         setIsLoading(false);
       });
@@ -64,6 +73,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           };
           setUser(gUser);
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gUser));
+          
+          if (_event === "SIGNED_IN" && window.location.hash.includes("access_token")) {
+            window.history.replaceState(null, "", window.location.pathname + window.location.search);
+            const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+            if (gUser.email.toLowerCase().trim() === adminEmail && window.location.pathname !== "/admin") {
+              window.location.href = "/admin";
+            }
+          }
         } else if (_event === "SIGNED_OUT") {
           setUser(null);
           localStorage.removeItem(LOCAL_STORAGE_KEY);
