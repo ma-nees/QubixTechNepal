@@ -84,7 +84,7 @@ function Careers() {
             {[
               ["Ownership", "Small teams, real decisions, visible impact."],
               ["Learning budget", "Courses, books and conference support every year."],
-              ["Health cover", "Medical insurance for you and your family."],
+              ["Health cover", "Medical insurance for you."],
               ["Flexible hours", "Hybrid schedules built around focus time."],
             ].map(([t, c], i) => (
               <Reveal as="li" key={t} delay={i * 60}>
