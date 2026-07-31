@@ -27,13 +27,13 @@ export function ApplicationModal({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate network request
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    
+
     setIsSubmitting(false);
     setIsSuccess(true);
-    
+
     // Close modal after success
     setTimeout(() => {
       setOpen(false);
@@ -64,10 +64,14 @@ export function ApplicationModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-4 space-y-5">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First name <span className="text-destructive">*</span></Label>
                 <Input id="firstName" required placeholder="John" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="middleName">Middle name</Label>
+                <Input id="middleName" placeholder="Christ" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last name <span className="text-destructive">*</span></Label>
@@ -75,22 +79,25 @@ export function ApplicationModal({
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email address <span className="text-destructive">*</span></Label>
-              <Input id="email" type="email" required placeholder="john@example.com" />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email address <span className="text-destructive">*</span></Label>
+                <Input id="email" type="email" required placeholder="john@example.com" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="portfolio">Portfolio or LinkedIn</Label>
+                <Input id="portfolio" type="url" placeholder="https://linkedin.com/in/..." />
+              </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="portfolio">Portfolio or LinkedIn URL <span className="text-destructive">*</span></Label>
-              <Input id="portfolio" type="url" required placeholder="https://linkedin.com/in/..." />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="message">Cover Letter / Note</Label>
-              <Textarea 
-                id="message" 
-                placeholder="Tell us why you're a great fit for this role..." 
-                className="min-h-[120px] resize-none"
+              <Label htmlFor="resume">Resume / CV (PDF) <span className="text-destructive">*</span></Label>
+              <Input 
+                id="resume" 
+                type="file" 
+                accept=".pdf,application/pdf" 
+                required 
+                className="cursor-pointer file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
               />
             </div>
 
