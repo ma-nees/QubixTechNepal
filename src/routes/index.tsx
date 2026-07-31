@@ -53,7 +53,7 @@ function Home() {
     <PageShell>
       <section className="hero-wash relative overflow-hidden border-b border-border">
         <div className="contour pointer-events-none absolute inset-x-0 -bottom-24 h-72 opacity-30" aria-hidden="true" />
-        <div className="container-page relative grid items-center gap-8 py-12 sm:gap-12 sm:py-24 lg:grid-cols-[1.05fr_1fr]">
+        <div className="container-page relative grid items-center gap-8 py-10 sm:gap-12 sm:py-16 lg:grid-cols-[1.05fr_1fr]">
           <div>
             <NepalBadge />
             <h1 className="mt-4 font-display text-3xl font-extrabold leading-[1.08] text-ink sm:mt-6 sm:text-5xl lg:text-6xl">

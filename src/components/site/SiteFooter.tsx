@@ -44,8 +44,8 @@ export function SiteFooter() {
   }, []);
 
   return (
-    <footer className="mt-24 border-t border-border bg-surface">
-      <div className="container-page grid gap-10 py-14 md:grid-cols-4">
+    <footer className="mt-12 sm:mt-16 border-t border-border bg-surface">
+      <div className="container-page grid gap-10 py-10 sm:py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
             <img src={logoUrl} alt="Qubix Tech Nepal logo" loading="lazy" className="h-11 w-11 object-contain" />
