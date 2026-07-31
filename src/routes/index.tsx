@@ -136,76 +136,7 @@ function Home() {
         </Reveal>
       </section>
 
-      <section className="border-y border-border bg-secondary/25">
-        <div className="container-page grid items-center gap-8 py-12 sm:gap-12 sm:py-20 lg:grid-cols-2">
-          <Reveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Flagship product</p>
-            <h2 className="mt-2.5 font-display text-2xl font-extrabold text-ink sm:mt-3 sm:text-4xl">DriveSiksha</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base">
-              A complete SaaS platform for driving institutes — student onboarding, instructor scheduling, vehicle
-              rosters, licence-exam preparation and payments in one calm, reliable system built for Nepal's
-              training centres.
-            </p>
-            <ul className="mt-6 grid gap-2.5 text-xs text-muted-foreground sm:mt-7 sm:gap-3 sm:text-sm">
-              {[
-                "Multi-branch student & enrollment management",
-                "Instructor and vehicle scheduling engine",
-                "Practice tests aligned to licence curriculum",
-                "Payments, invoicing and performance reporting",
-              ].map((f) => (
-                <li key={f} className="flex items-start gap-2.5">
-                  <Sparkles size={16} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link
-              to="/portfolio"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:mt-8 sm:w-auto"
-            >
-              See the product <ArrowRight size={16} />
-            </Link>
-          </Reveal>
 
-          <Reveal delay={100}>
-            <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft sm:rounded-3xl sm:p-6">
-              <div className="flex items-center gap-2">
-                <span className="size-2.5 rounded-full bg-accent" />
-                <span className="size-2.5 rounded-full bg-secondary" />
-                <span className="size-2.5 rounded-full bg-border" />
-                <span className="ml-2 text-xs font-medium text-muted-foreground">DriveSiksha · Dashboard</span>
-              </div>
-              <div className="mt-4 grid gap-3 sm:mt-5 sm:gap-4">
-                <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                  {[
-                    ["1,284", "Active students"],
-                    ["46", "Instructors"],
-                    ["92%", "Pass rate"],
-                  ].map(([v, l]) => (
-                    <div key={l} className="rounded-xl border border-border bg-background p-2.5 sm:p-3">
-                      <div className="font-display text-sm font-bold text-ink sm:text-lg">{v}</div>
-                      <div className="mt-0.5 text-[10px] text-muted-foreground sm:text-[11px]">{l}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="rounded-xl border border-border bg-background p-3 sm:p-4">
-                  <div className="text-xs font-semibold text-muted-foreground">Weekly sessions</div>
-                  <div className="mt-3 flex h-24 items-end gap-1.5 sm:mt-4 sm:h-28 sm:gap-2">
-                    {[38, 62, 47, 80, 56, 92, 71].map((h, i) => (
-                      <div
-                        key={i}
-                        style={{ height: `${h}%` }}
-                        className="flex-1 rounded-t-md bg-primary/70"
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
 
       <section className="container-page py-12 sm:py-20">
         <Reveal>

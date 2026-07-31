@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import emailjs from "@emailjs/browser";
-import { Clock, Facebook, Github, Linkedin, Mail, MapPin, Phone, Send, Loader2, CheckCircle2, AlertCircle, LogIn } from "lucide-react";
+import { Clock, Mail, MapPin, Phone, Send, Loader2, CheckCircle2, AlertCircle, LogIn, icons } from "lucide-react";
 import { PageShell, PageHero, SectionHeading, CtaBand } from "@/components/site/PageShell";
 import { Reveal } from "@/components/site/Reveal";
 import { useAuth } from "@/lib/auth-context";
@@ -38,6 +38,31 @@ export function Contact() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const { user, openAuthModal, logout } = useAuth();
+  const [socialLinks, setSocialLinks] = useState<any[]>([]);
+  const [companySettings, setCompanySettings] = useState<any>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      if (!supabase) return;
+      try {
+        const { data, error } = await supabase.from("social_links").select("*");
+        if (data && !error) {
+          setSocialLinks(data);
+        }
+      } catch (e) {
+        console.warn("Failed to load social links", e);
+      }
+      try {
+        const { data: compData, error: compError } = await supabase.from("company_settings").select("*").single();
+        if (compData && !compError) {
+          setCompanySettings(compData);
+        }
+      } catch (e) {
+        console.warn("Failed to load company settings", e);
+      }
+    }
+    loadData();
+  }, []);
 
   // EmailJS configuration (Reads securely from environment variables)
   const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
@@ -287,20 +312,24 @@ export function Contact() {
               <ul className="mt-5 grid gap-4 text-sm text-muted-foreground">
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-                  Kamalpokhari, Kathmandu 44600, Nepal
+                  {companySettings?.address || "Kamalpokhari, Kathmandu, Nepal"}
                 </li>
-                <li className="flex items-start gap-3">
-                  <Phone size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-                  <a href="tel:+9779866291003" className="hover:text-ink">
-                    +977 986-6291003
-                  </a>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Phone size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-                  <a href="tel:+9779863479066" className="hover:text-ink">
-                    +977 986-3479066
-                  </a>
-                </li>
+                {(companySettings?.phone1 || "+977 986-6291003") && (
+                  <li className="flex items-start gap-3">
+                    <Phone size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
+                    <a href={`tel:${(companySettings?.phone1 || "+977 986-6291003").replace(/[^0-9+]/g, '')}`} className="hover:text-ink">
+                      {companySettings?.phone1 || "+977 986-6291003"}
+                    </a>
+                  </li>
+                )}
+                {(companySettings?.phone2 || "+977 986-3479066") && (
+                  <li className="flex items-start gap-3">
+                    <Phone size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
+                    <a href={`tel:${(companySettings?.phone2 || "+977 986-3479066").replace(/[^0-9+]/g, '')}`} className="hover:text-ink">
+                      {companySettings?.phone2 || "+977 986-3479066"}
+                    </a>
+                  </li>
+                )}
                 <li className="flex items-start gap-3">
                   <Mail size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
                   <a href="mailto:qubixtechnepal@gmail.com" className="hover:text-ink">
@@ -316,34 +345,34 @@ export function Contact() {
                   </span>
                 </li>
               </ul>
-              <ul className="mt-6 flex gap-2">
-                {[
-                  [Linkedin, "LinkedIn"],
-                  [Facebook, "Facebook"],
-                  [Github, "GitHub"],
-                ].map(([Icon, label]) => {
-                  const I = Icon as typeof Linkedin;
-                  return (
-                    <li key={label as string}>
-                      <a
-                        href="#"
-                        aria-label={label as string}
-                        className="grid size-11 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-ink"
-                      >
-                        <I size={16} />
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
+              {socialLinks.length > 0 && (
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {socialLinks.map((link) => {
+                    const IconComponent = (icons as any)[link.icon] || icons.Link;
+                    return (
+                      <li key={link.id}>
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={link.name}
+                          className="grid size-11 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-ink"
+                        >
+                          <IconComponent size={16} />
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
           </Reveal>
 
           <Reveal delay={140}>
             <div className="overflow-hidden rounded-3xl border border-border bg-surface">
               <iframe
-                title="Qubix Tech Nepal office location in Kathmandu"
-                src="https://www.google.com/maps?q=Kamalpokhari,+Kathmandu,+Nepal&output=embed"
+                title="Qubix Tech Nepal office location"
+                src={companySettings?.map_embed_url || "https://www.google.com/maps?q=Kamalpokhari,+Kathmandu,+Nepal&output=embed"}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="h-72 w-full border-0"

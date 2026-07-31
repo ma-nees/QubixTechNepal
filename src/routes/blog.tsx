@@ -55,7 +55,7 @@ const posts: Post[] = [
     category: "Engineering",
     date: "12 Jun 2026",
     readTime: "6 min read",
-    author: { name: "Birendra Sahani", role: "Lead Architect", avatar: "BS" },
+    author: { name: "Aman Khanal", role: "Lead Architect", avatar: "BS" },
     excerpt:
       "A deep dive into database isolation models, row-level security, dynamic tenant routing, and multi-currency billing strategies we used when building DriveSiksha.",
     image: blogSaas,
@@ -91,7 +91,7 @@ const posts: Post[] = [
     category: "Craft",
     date: "9 May 2026",
     readTime: "3 min read",
-    author: { name: "Birendra Sahani", role: "Lead Architect", avatar: "BS" },
+    author: { name: "Aman Khanal", role: "Lead Architect", avatar: "BS" },
     excerpt:
       "Why we treat initial load speed like a non-negotiable brand statement. Sub-100ms response times and zero layout shifts on 3G networks.",
     featured: false,
@@ -199,11 +199,10 @@ export function Blog() {
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`rounded-full px-4 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
-                  selectedCategory === cat
+                className={`rounded-full px-4 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${selectedCategory === cat
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "bg-surface text-muted-foreground border border-border hover:border-primary/40 hover:text-ink"
-                }`}
+                  }`}
               >
                 {cat}
               </button>

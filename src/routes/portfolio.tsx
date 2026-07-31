@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { PageShell, PageHero, SectionHeading, CtaBand } from "@/components/site/PageShell";
 import { Reveal } from "@/components/site/Reveal";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/portfolio")({
   component: Portfolio,
@@ -38,113 +39,54 @@ export const Route = createFileRoute("/portfolio")({
 interface WorkItem {
   id: string;
   title: string;
-  category: "Flagship" | "SaaS & Enterprise" | "Fintech" | "EdTech" | "AI & Automation";
+  category: "Flagship" | "SaaS & Enterprise" | "Fintech" | "EdTech" | "AI & Automation" | string;
   badge: string;
   copy: string;
   metric: string;
   highlights?: string[];
-  status?: "Live" | "Flagship" | "Deployed" | "Beta";
+  status?: "Live" | "Flagship" | "Deployed" | "Beta" | string;
 }
-
-const items: WorkItem[] = [
-  {
-    id: "drivesiksha",
-    title: "DriveSiksha",
-    category: "Flagship",
-    badge: "Flagship SaaS Platform",
-    status: "Flagship",
-    copy: "The complete operating system for driving institutes across Nepal. Student onboarding, instructor scheduling, vehicle rosters, licence-exam preparation and payments in one calm, reliable system.",
-    metric: "92% exam pass rate tracked across 1,200+ students",
-    highlights: [
-      "Student lifecycle & branch onboarding",
-      "Smart instructor & vehicle rosters",
-      "Licence-exam practice tests",
-      "Payments, receipts & analytics",
-    ],
-  },
-  {
-    id: "himal-logistics",
-    title: "Himal Logistics Suite",
-    category: "SaaS & Enterprise",
-    badge: "Enterprise Software",
-    status: "Live",
-    copy: "Fleet dispatch, consignment tracking, automated settlement and driver rosters for a national freight & logistics carrier in Nepal.",
-    metric: "38% faster dispatch cycle time",
-  },
-  {
-    id: "sahakari-core",
-    title: "Sahakari Core",
-    category: "Fintech",
-    badge: "Cooperative Fintech",
-    status: "Live",
-    copy: "Member management, daily savings collector sync, deposit accounts, and loan ledger management for financial cooperative institutions.",
-    metric: "12 cooperative branches operating live",
-  },
-  {
-    id: "aarambha-lms",
-    title: "Aarambha LMS",
-    category: "EdTech",
-    badge: "Education Platform",
-    status: "Live",
-    copy: "Blended learning platform with offline-first course video delivery, student progress tracking, and automated certification.",
-    metric: "18,000+ active learners onboarded",
-  },
-  {
-    id: "retail-pulse-ai",
-    title: "Retail Pulse AI",
-    category: "AI & Automation",
-    badge: "AI Solution",
-    status: "Live",
-    copy: "Demand forecasting, stock intelligence, and automated reorder triggers for retail chains operating across Kathmandu Valley.",
-    metric: "21% reduction in store stockouts",
-  },
-  {
-    id: "mediqueue",
-    title: "MediQueue",
-    category: "SaaS & Enterprise",
-    badge: "Healthcare System",
-    status: "Live",
-    copy: "Patient appointments, doctor triage rosters, prescription records, and billing workflow for a private clinic network.",
-    metric: "40% shorter patient wait times",
-  },
-  {
-    id: "qubix-desk",
-    title: "QubixDesk",
-    category: "SaaS & Enterprise",
-    badge: "Service Desk SaaS",
-    status: "Beta",
-    copy: "Ticketing, customer support queues, and internal team task dispatch built for fast-scaling companies in Nepal.",
-    metric: "4.8/5 satisfaction rate in early access",
-  },
-  {
-    id: "qubix-pay",
-    title: "QubixPay Link",
-    category: "Fintech",
-    badge: "Fintech Tool",
-    status: "Beta",
-    copy: "Instant payment links, automated digital receipts, and bank reconciliation for Nepali small businesses.",
-    metric: "Processed 5,000+ invoices in beta",
-  },
-  {
-    id: "qubix-iq",
-    title: "QubixIQ",
-    category: "AI & Automation",
-    badge: "AI Document Intelligence",
-    status: "Beta",
-    copy: "AI document parsing, optical character recognition, and automated data extraction for compliance-heavy financial workflows.",
-    metric: "99.4% extraction accuracy",
-  },
-];
 
 const categories = ["All Work", "Flagship", "SaaS & Enterprise", "Fintech", "EdTech", "AI & Automation"] as const;
 
 function Portfolio() {
   const [activeTab, setActiveTab] = useState<string>("All Work");
+  const [dbProjects, setDbProjects] = useState<WorkItem[]>([]);
+
+  // Fetch projects from Supabase on mount
+  useEffect(() => {
+    async function fetchProjects() {
+      if (!supabase) return;
+      try {
+        const { data, error } = await supabase.from("projects").select("*");
+        if (data && !error) {
+          const mapped: WorkItem[] = data.map((p: any) => ({
+            id: `db-${p.id}`,
+            title: p.name,
+            category: p.category || "SaaS & Enterprise",
+            badge: p.category || "Project",
+            copy: p.description || "",
+            metric: p.status === "Active" ? "Currently Active" : (p.status || ""),
+            status: p.status === "Active" ? "Live" : (p.status || "Planned"),
+          }));
+          setDbProjects(mapped);
+        }
+      } catch (e) {
+        console.warn("Failed to fetch projects for portfolio:", e);
+      }
+    }
+    fetchProjects();
+  }, []);
+
+  // Use Supabase projects directly
+  const items = useMemo(() => {
+    return dbProjects;
+  }, [dbProjects]);
 
   const filteredItems = useMemo(() => {
     if (activeTab === "All Work") return items;
     return items.filter((item) => item.category === activeTab);
-  }, [activeTab]);
+  }, [activeTab, items]);
 
   return (
     <PageShell>
