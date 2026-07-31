@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Briefcase, Clock, MapPin } from "lucide-react";
 import { PageShell, PageHero, SectionHeading, CtaBand } from "@/components/site/PageShell";
 import { Reveal } from "@/components/site/Reveal";
+import { ApplicationModal } from "@/components/site/ApplicationModal";
 
 export const Route = createFileRoute("/careers")({
   component: Careers,
@@ -63,12 +64,14 @@ function Careers() {
                     </span>
                   </p>
                 </div>
-                <a
-                  href={`mailto:careers@qubixtechnepal.com?subject=${encodeURIComponent(`Application — ${title}`)}`}
-                  className="shrink-0 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-primary"
-                >
-                  Apply
-                </a>
+                <ApplicationModal 
+                  jobTitle={title}
+                  trigger={
+                    <button className="shrink-0 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-primary">
+                      Apply
+                    </button>
+                  }
+                />
               </article>
             </Reveal>
           ))}
