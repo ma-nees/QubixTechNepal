@@ -41,25 +41,33 @@
   --radius: 0.75rem;
 
   /* Brand palette — derived from the Qubix logo */
-  --background: oklch(0.975 0.006 250);  /* very light blue-grey #F5F7FA */
-  --foreground: oklch(0.22 0.025 255);   /* dark navy #141B2D */
-  --ink: oklch(0.20 0.030 255);          /* deep navy text */
-  --surface: oklch(0.99 0.003 250);      /* near-white with blue tint */
+  --background: oklch(0.975 0.006 250);
+  /* very light blue-grey #F5F7FA */
+  --foreground: oklch(0.22 0.025 255);
+  /* dark navy #141B2D */
+  --ink: oklch(0.20 0.030 255);
+  /* deep navy text */
+  --surface: oklch(0.99 0.003 250);
+  /* near-white with blue tint */
 
   --card: oklch(0.99 0.003 250);
   --card-foreground: oklch(0.22 0.025 255);
   --popover: oklch(0.99 0.003 250);
   --popover-foreground: oklch(0.22 0.025 255);
 
-  --primary: oklch(0.575 0.195 260);     /* Qubix blue #2979FF */
-  --primary-foreground: oklch(0.99 0 0);  /* white */
-  --secondary: oklch(0.92 0.025 250);    /* light blue tint #DDE6F4 */
+  --primary: oklch(0.575 0.195 260);
+  /* Qubix blue #2979FF */
+  --primary-foreground: oklch(0.99 0 0);
+  /* white */
+  --secondary: oklch(0.92 0.025 250);
+  /* light blue tint #DDE6F4 */
   --secondary-foreground: oklch(0.30 0.04 255);
 
   --muted: oklch(0.94 0.010 250);
   --muted-foreground: oklch(0.50 0.015 255);
 
-  --accent: oklch(0.62 0.19 255);        /* electric blue accent #3B6FE8 */
+  --accent: oklch(0.62 0.19 255);
+  /* electric blue accent #3B6FE8 */
   --accent-foreground: oklch(0.99 0 0);
 
   --destructive: oklch(0.55 0.19 27);
@@ -69,11 +77,9 @@
   --input: oklch(0.90 0.012 250);
   --ring: oklch(0.575 0.195 260);
 
-  --gradient-hero: radial-gradient(
-      110% 90% at 12% 0%,
+  --gradient-hero: radial-gradient(110% 90% at 12% 0%,
       color-mix(in oklab, var(--secondary) 62%, transparent) 0%,
-      transparent 62%
-    ),
+      transparent 62%),
     radial-gradient(80% 70% at 92% 8%, color-mix(in oklab, var(--accent) 18%, transparent) 0%, transparent 60%);
   --shadow-soft: 0 1px 2px oklch(0.22 0.03 255 / 0.06), 0 18px 44px -22px oklch(0.30 0.05 255 / 0.22);
   --shadow-lift: 0 24px 60px -26px oklch(0.30 0.05 255 / 0.32);
@@ -115,6 +121,7 @@
   margin-inline: auto;
   max-width: 76rem;
   padding-inline: 0.75rem;
+
   @media (min-width: 640px) {
     padding-inline: 1.25rem;
   }
@@ -125,11 +132,9 @@
 }
 
 @utility contour {
-  background-image: repeating-radial-gradient(
-    circle at 50% 120%,
-    color-mix(in oklab, var(--primary) 22%, transparent) 0 1px,
-    transparent 1px 26px
-  );
+  background-image: repeating-radial-gradient(circle at 50% 120%,
+      color-mix(in oklab, var(--primary) 22%, transparent) 0 1px,
+      transparent 1px 26px);
 }
 
 @utility shadow-soft {
@@ -163,6 +168,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -176,25 +182,35 @@
     opacity: 0;
     transform: translateY(16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 /* Hide scrollbar utility for specific elements */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-none {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Hide global scrollbars for the entire site */
-html, body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+html,
+body {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
-html::-webkit-scrollbar, body::-webkit-scrollbar {
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
   display: none;
 }
