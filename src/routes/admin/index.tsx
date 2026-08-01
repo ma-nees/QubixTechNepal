@@ -1413,6 +1413,95 @@ function AdminPage() {
           </div>
         )}
 
+        {/* Edit Vacancy Modal */}
+        {editingVacancy && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <div className="w-full max-w-lg rounded-3xl border border-border bg-surface p-6 shadow-lift relative">
+              <button
+                className="absolute right-4 top-4 rounded-full p-2 text-muted-foreground hover:bg-gray-100 transition-colors"
+                onClick={() => setEditingVacancy(null)}
+              >
+                ✕
+              </button>
+              <h3 className="text-xl font-bold text-ink mb-4">Edit Vacancy</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Job Title</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary"
+                    value={editingVacancy.title}
+                    onChange={(e) => setEditingVacancy({ ...editingVacancy, title: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Responsibilities</label>
+                  <textarea
+                    className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary min-h-[80px]"
+                    value={editingVacancy.responsibilities}
+                    onChange={(e) => setEditingVacancy({ ...editingVacancy, responsibilities: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Skills & Qualifications</label>
+                  <textarea
+                    className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary min-h-[80px]"
+                    value={editingVacancy.skills}
+                    onChange={(e) => setEditingVacancy({ ...editingVacancy, skills: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Status</label>
+                  <select
+                    className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary"
+                    value={editingVacancy.status}
+                    onChange={(e) => setEditingVacancy({ ...editingVacancy, status: e.target.value })}
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+                </div>
+                <div className="flex gap-3 pt-2">
+                  <button
+                    className="flex-1 rounded-xl border border-border bg-background px-4 py-2 font-semibold text-muted-foreground hover:bg-gray-50 transition-colors"
+                    onClick={() => setEditingVacancy(null)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="flex-1 rounded-xl bg-primary px-4 py-2 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    onClick={async () => {
+                      setEditVacancyLoading(true);
+                      try {
+                        const { error } = await supabase.from("vacancies").update({
+                          title: editingVacancy.title,
+                          responsibilities: editingVacancy.responsibilities,
+                          skills: editingVacancy.skills,
+                          status: editingVacancy.status
+                        }).eq("id", editingVacancy.id);
+                        if (!error) {
+                          setVacancies(vacancies.map(v => v.id === editingVacancy.id ? editingVacancy : v));
+                          setEditingVacancy(null);
+                          setToast({ type: "success", message: "Vacancy updated successfully!" });
+                        } else {
+                          setToast({ type: "error", message: "Failed to update vacancy." });
+                        }
+                      } catch(e) {
+                        console.error(e);
+                        setToast({ type: "error", message: "Failed to update vacancy." });
+                      }
+                      setEditVacancyLoading(false);
+                    }}
+                    disabled={editVacancyLoading}
+                  >
+                    {editVacancyLoading ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Delete Vacancy Confirmation */}
         {deletingVacancyId && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
@@ -1599,8 +1688,14 @@ function AdminPage() {
                   </div>
                   <div className="mt-4 flex gap-2">
                     <button
+                      onClick={() => setEditingVacancy(vac)}
+                      className="text-xs text-primary hover:underline font-medium px-2 py-1 bg-primary/10 rounded-md"
+                    >
+                      Edit
+                    </button>
+                    <button
                       onClick={() => setDeletingVacancyId(vac.id)}
-                      className="text-xs text-destructive hover:underline font-medium"
+                      className="text-xs text-destructive hover:underline font-medium px-2 py-1 bg-destructive/10 rounded-md"
                     >
                       Delete
                     </button>
