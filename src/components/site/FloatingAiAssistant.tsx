@@ -49,7 +49,7 @@ export function FloatingAiAssistant() {
     try {
       const systemMessage: Message = {
         role: "system",
-        content: "You are the AI Assistant for Qubix Tech Nepal. Be concise, friendly, and helpful. You answer questions about Qubix's software development, SaaS, and cloud infrastructure services."
+        content: "You are the AI Assistant for Qubix Tech Nepal. Be concise, friendly, and helpful. You answer questions about Qubix's software development, SaaS, and cloud infrastructure services. When listing items, use bullet points. Otherwise, use short paragraphs. Keep your formatting clean and readable for a small chat interface."
       };
 
       const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
@@ -116,7 +116,7 @@ export function FloatingAiAssistant() {
                   <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${msg.role === 'user' ? 'bg-ink text-surface' : 'bg-primary/10 text-primary'}`}>
                     {msg.role === 'user' ? <User size={12} /> : <Sparkles size={12} />}
                   </div>
-                  <div className={`rounded-2xl px-4 py-2.5 text-xs shadow-sm max-w-[85%] break-words ${
+                  <div className={`rounded-2xl px-4 py-2.5 text-xs shadow-sm max-w-[85%] break-words whitespace-pre-wrap ${
                     msg.role === 'user' 
                       ? 'rounded-tr-none bg-ink text-surface' 
                       : 'rounded-tl-none bg-surface border border-border text-ink'
