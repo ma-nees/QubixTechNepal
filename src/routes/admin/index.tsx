@@ -58,6 +58,7 @@ interface Vacancy {
   title: string;
   responsibilities: string;
   skills: string;
+  qualifications?: string;
   status: string;
 }
 
@@ -173,6 +174,7 @@ function AdminPage() {
     title: "",
     responsibilities: "",
     skills: "",
+    qualifications: "",
     status: "Active",
   });
   const [editingVacancy, setEditingVacancy] = useState<Vacancy | null>(null);
@@ -312,6 +314,7 @@ function AdminPage() {
                 title: v.title,
                 responsibilities: v.responsibilities,
                 skills: v.skills,
+                qualifications: v.qualifications || "",
                 status: v.status || "Active",
               })),
             );
@@ -1361,11 +1364,19 @@ function AdminPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1">Skills & Qualifications</label>
+                  <label className="block text-sm font-semibold mb-1">Skills</label>
                   <textarea
                     className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary min-h-[80px]"
                     value={newVacancyData.skills}
                     onChange={(e) => setNewVacancyData({ ...newVacancyData, skills: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Qualifications</label>
+                  <textarea
+                    className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary min-h-[80px]"
+                    value={newVacancyData.qualifications}
+                    onChange={(e) => setNewVacancyData({ ...newVacancyData, qualifications: e.target.value })}
                   />
                 </div>
                 <div className="flex gap-3 pt-2">
@@ -1384,6 +1395,7 @@ function AdminPage() {
                           title: newVacancyData.title,
                           responsibilities: newVacancyData.responsibilities,
                           skills: newVacancyData.skills,
+                          qualifications: newVacancyData.qualifications,
                           status: "Active"
                         }).select();
                         if (!error && data) {
@@ -1392,10 +1404,11 @@ function AdminPage() {
                             title: data[0].title,
                             responsibilities: data[0].responsibilities,
                             skills: data[0].skills,
+                            qualifications: data[0].qualifications,
                             status: data[0].status
                           }, ...vacancies]);
                           setShowAddVacancy(false);
-                          setNewVacancyData({ title: "", responsibilities: "", skills: "", status: "Active" });
+                          setNewVacancyData({ title: "", responsibilities: "", skills: "", qualifications: "", status: "Active" });
                           setToast({ type: "success", message: "Vacancy added successfully!" });
                         }
                       } catch(e) {
@@ -1443,11 +1456,19 @@ function AdminPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1">Skills & Qualifications</label>
+                  <label className="block text-sm font-semibold mb-1">Skills</label>
                   <textarea
                     className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary min-h-[80px]"
                     value={editingVacancy.skills}
                     onChange={(e) => setEditingVacancy({ ...editingVacancy, skills: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Qualifications</label>
+                  <textarea
+                    className="w-full rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-primary min-h-[80px]"
+                    value={editingVacancy.qualifications || ""}
+                    onChange={(e) => setEditingVacancy({ ...editingVacancy, qualifications: e.target.value })}
                   />
                 </div>
                 <div>
@@ -1477,6 +1498,7 @@ function AdminPage() {
                           title: editingVacancy.title,
                           responsibilities: editingVacancy.responsibilities,
                           skills: editingVacancy.skills,
+                          qualifications: editingVacancy.qualifications,
                           status: editingVacancy.status
                         }).eq("id", editingVacancy.id);
                         if (!error) {
@@ -1684,6 +1706,12 @@ function AdminPage() {
                       <span className="text-xs font-semibold text-muted-foreground">Skills</span>
                       <p className="text-xs text-ink line-clamp-3">{vac.skills}</p>
                     </div>
+                    {vac.qualifications && (
+                      <div>
+                        <span className="text-xs font-semibold text-muted-foreground">Qualifications</span>
+                        <p className="text-xs text-ink line-clamp-3">{vac.qualifications}</p>
+                      </div>
+                    )}
                     <p className="text-xs font-semibold mt-2">Status: {vac.status}</p>
                   </div>
                   <div className="mt-4 flex gap-2">
