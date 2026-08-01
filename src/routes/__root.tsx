@@ -145,6 +145,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 import { AuthProvider } from "@/lib/auth-context";
+import { FloatingAiAssistant } from "@/components/site/FloatingAiAssistant";
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -154,6 +155,7 @@ function RootComponent() {
       <AuthProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
+        <FloatingAiAssistant />
       </AuthProvider>
     </QueryClientProvider>
   );
