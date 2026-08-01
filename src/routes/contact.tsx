@@ -203,7 +203,7 @@ export function Contact() {
         </span>
       </PageHero>
 
-      <section className="container-page grid gap-10 py-16 sm:py-20 lg:grid-cols-[1.1fr_1fr]">
+      <section className="container-page grid gap-8 sm:gap-10 py-12 sm:py-20 lg:grid-cols-[1.1fr_1fr]">
         <Reveal>
           <form
             ref={formRef}
@@ -417,7 +417,7 @@ export function Contact() {
                 }
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="h-72 w-full border-0"
+                className="h-64 sm:h-72 w-full border-0"
               />
             </div>
           </Reveal>
@@ -425,7 +425,7 @@ export function Contact() {
       </section>
 
       <section className="border-y border-border bg-secondary/25">
-        <div className="container-page py-16 sm:py-20">
+        <div className="container-page py-12 sm:py-20">
           <Reveal>
             <SectionHeading eyebrow="FAQ" title="Questions we're often asked" />
           </Reveal>

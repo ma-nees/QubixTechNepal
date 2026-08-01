@@ -107,7 +107,7 @@ function Portfolio() {
       />
 
       {/* Category Tabs & Work Grid */}
-      <section className="container-page py-16 sm:py-20">
+      <section className="container-page py-12 sm:py-20">
         <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-display text-2xl font-extrabold text-ink sm:text-3xl">
@@ -137,7 +137,7 @@ function Portfolio() {
           </div>
         </div>
 
-        <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filteredItems.map((item, i) => (
             <Reveal as="li" key={item.id} delay={(i % 3) * 60}>
               <article className="lift flex h-full flex-col justify-between rounded-2xl border border-border bg-surface p-6 sm:p-7">

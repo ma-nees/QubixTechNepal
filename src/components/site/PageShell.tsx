@@ -37,7 +37,7 @@ export function PageHero({
     <section className="hero-wash border-b border-border">
       <div className="container-page py-10 sm:py-14">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{eyebrow}</p>
-        <h1 className="mt-3 max-w-3xl font-display text-3xl font-extrabold leading-[1.08] text-ink sm:mt-4 sm:text-5xl sm:leading-[1.05]">
+        <h1 className="mt-3 max-w-3xl font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:mt-4 sm:text-5xl sm:leading-[1.05]">
           {title}
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-5 sm:text-lg">
@@ -77,7 +77,7 @@ export function SectionHeading({
 
 export function CtaBand() {
   return (
-    <section className="container-page py-12 sm:py-20">
+    <section className="container-page py-10 sm:py-20">
       <div className="hero-wash relative overflow-hidden rounded-2xl border border-border bg-surface px-5 py-10 text-center shadow-soft sm:rounded-3xl sm:px-14 sm:py-14">
         <div
           className="contour pointer-events-none absolute inset-x-0 bottom-0 h-40 opacity-40"

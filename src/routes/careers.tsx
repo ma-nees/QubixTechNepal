@@ -68,12 +68,12 @@ function Careers() {
         subtitle="We hire for craft, curiosity and care. In return you get real ownership, calm process and work that reaches thousands of people."
       />
 
-      <section className="container-page py-20">
+      <section className="container-page py-12 sm:py-20">
         <Reveal>
           <SectionHeading eyebrow="Open roles" title="Where we're hiring" />
         </Reveal>
 
-        <ul className="mt-10 grid gap-6">
+        <ul className="mt-8 sm:mt-10 grid gap-4 sm:gap-6">
           {loading ? (
             <div className="flex justify-center py-10">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -87,7 +87,7 @@ function Careers() {
                   className="lift flex flex-col rounded-2xl border border-border bg-surface overflow-hidden cursor-pointer transition-all duration-300"
                   onClick={() => setExpandedId(isExpanded ? null : vac.id)}
                 >
-                  <div className="flex items-center justify-between p-6 sm:p-8 hover:bg-gray-50/50 transition-colors">
+                  <div className="flex items-center justify-between p-5 sm:p-8 hover:bg-gray-50/50 transition-colors">
                     <h3 className="font-display text-xl font-bold text-ink">{vac.title}</h3>
                     <div className="text-muted-foreground text-sm font-semibold px-3 py-1 rounded-full bg-gray-100">
                        {isExpanded ? "Hide Details" : "View Details"}
@@ -96,7 +96,7 @@ function Careers() {
 
                   {isExpanded && (
                     <div 
-                      className="p-6 sm:p-8 pt-0 border-t border-border mt-2 animate-[slideUp_0.3s_ease-out]" 
+                      className="p-5 sm:p-8 pt-0 border-t border-border mt-2 animate-[slideUp_0.3s_ease-out]" 
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="flex flex-col md:flex-row md:items-start justify-between gap-8 mt-6">
@@ -156,11 +156,11 @@ function Careers() {
       </section>
 
       <section className="border-y border-border bg-secondary/25">
-        <div className="container-page py-20">
+        <div className="container-page py-12 sm:py-20">
           <Reveal>
             <SectionHeading eyebrow="Benefits" title="What we offer" />
           </Reveal>
-          <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-8 sm:mt-12 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["Ownership", "Small teams, real decisions, visible impact."],
               ["Learning budget", "Courses, books and conference support every year."],

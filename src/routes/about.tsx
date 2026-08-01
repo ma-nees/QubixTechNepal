@@ -39,7 +39,7 @@ function About() {
         </span>
       </PageHero>
 
-      <section className="container-page grid gap-6 py-20 md:grid-cols-2">
+      <section className="container-page grid gap-5 sm:gap-6 py-12 sm:py-20 md:grid-cols-2">
         {[
           [
             Target,
@@ -68,11 +68,11 @@ function About() {
       </section>
 
       <section className="border-y border-border bg-secondary/25">
-        <div className="container-page py-20">
+        <div className="container-page py-12 sm:py-20">
           <Reveal>
             <SectionHeading eyebrow="Our values" title="How we work" />
           </Reveal>
-          <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-8 sm:mt-12 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["Craft", "Details compound. We finish what we start, to a standard we'd sign."],
               ["Clarity", "Plain language, honest timelines and visible progress."],
@@ -90,11 +90,11 @@ function About() {
         </div>
       </section>
 
-      <section className="container-page py-20">
+      <section className="container-page py-12 sm:py-20">
         <Reveal>
           <SectionHeading eyebrow="Our story" title="From a small studio to a product company" />
         </Reveal>
-        <ol className="mt-12 grid gap-6 border-l border-border pl-6">
+        <ol className="mt-8 sm:mt-12 grid gap-5 sm:gap-6 border-l border-border pl-6">
           {[
             [
               "2021",

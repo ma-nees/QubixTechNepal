@@ -77,8 +77,8 @@ function Services() {
         subtitle="Whether you need a product built from zero or an existing platform rescued and scaled, we bring the full engineering surface under one roof."
       />
 
-      <section className="container-page py-20">
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="container-page py-12 sm:py-20">
+        <ul className="grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map(([Icon, title, copy], i) => (
             <Reveal as="li" key={title} delay={(i % 3) * 60}>
               <div className="lift h-full rounded-2xl border border-border bg-surface p-6">
@@ -94,11 +94,11 @@ function Services() {
       </section>
 
       <section className="border-y border-border bg-secondary/25">
-        <div className="container-page py-20">
+        <div className="container-page py-12 sm:py-20">
           <Reveal>
             <SectionHeading eyebrow="Process" title="A delivery rhythm you can plan around" />
           </Reveal>
-          <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-8 sm:mt-12 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["01", "Discover", "Goals, constraints, users and success metrics."],
               ["02", "Design", "Architecture, data model and interface direction."],
