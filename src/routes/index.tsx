@@ -106,14 +106,14 @@ function Home() {
           </div>
 
           <div className="relative mt-2 lg:mt-0">
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-soft sm:rounded-3xl aspect-[4/3] sm:aspect-video lg:aspect-auto lg:h-[500px]">
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-soft sm:rounded-3xl">
               <img
                 src={hero}
                 alt="Abstract geometric Himalayan ranges with topographic contour lines"
                 width={1408}
                 height={1008}
                 fetchPriority="high"
-                className="h-full w-full object-cover"
+                className="h-auto w-full object-contain brightness-110 contrast-125 saturate-110 shadow-2xl transition-all hover:scale-[1.02] duration-500"
               />
             </div>
           </div>
