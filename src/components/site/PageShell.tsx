@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
-import { WhatsAppButton } from "./WhatsAppButton";
+
 
 export function PageShell({ children }: { children: ReactNode }) {
   return (
@@ -17,7 +17,6 @@ export function PageShell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 }
