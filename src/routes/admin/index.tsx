@@ -793,7 +793,7 @@ function AdminPage() {
 
         {activeTab === "overview" && (
           <div className="mt-8 space-y-8">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {[
                 {
                   title: "Total Projects",
@@ -828,20 +828,22 @@ function AdminPage() {
                 return (
                   <div
                     key={stat.title}
-                    className="rounded-3xl border border-border bg-surface p-6 shadow-soft"
+                    className="rounded-2xl sm:rounded-3xl border border-border bg-surface p-4 sm:p-6 shadow-soft flex flex-col justify-between"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-muted-foreground">
+                    <div className="flex items-start sm:items-center justify-between gap-2">
+                      <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground leading-tight">
                         {stat.title}
                       </span>
-                      <div className={`p-2.5 rounded-2xl ${stat.color}`}>
-                        <Icon size={18} />
+                      <div className={`p-2 sm:p-2.5 rounded-xl sm:rounded-2xl shrink-0 ${stat.color}`}>
+                        <Icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                       </div>
                     </div>
-                    <p className="mt-4 font-display text-3xl font-extrabold text-ink">
-                      {stat.value}
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">{stat.change}</p>
+                    <div>
+                      <p className="mt-3 sm:mt-4 font-display text-2xl sm:text-3xl font-extrabold text-ink">
+                        {stat.value}
+                      </p>
+                      <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-muted-foreground truncate">{stat.change}</p>
+                    </div>
                   </div>
                 );
               })}
