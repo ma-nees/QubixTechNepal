@@ -253,7 +253,7 @@ function AdminPage() {
                 name: p.name,
                 description: p.description || "",
                 category: p.category,
-                status: p.status,
+                status: ["Active", "Inactive", "Planned"].includes(p.status) ? p.status : "Active",
                 userCount: p.userCount,
                 uptime: p.uptime,
                 github_link: p.github_link || "",
