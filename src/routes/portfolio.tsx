@@ -76,7 +76,7 @@ function Portfolio() {
             category: p.category || "SaaS & Enterprise",
             badge: p.category || "Project",
             copy: p.description || "",
-            metric: p.status === "Active" ? "Currently Active" : p.status || "",
+            metric: p.metric || (p.status === "Active" ? "Currently Active" : p.status === "Beta" ? "Early Access / Testing" : "In Development"),
             status: p.status === "Active" ? "Live" : p.status || "Planned",
           }));
           setDbProjects(mapped);
