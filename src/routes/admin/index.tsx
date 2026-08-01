@@ -1694,27 +1694,29 @@ function AdminPage() {
                   key={vac.id}
                   className="rounded-3xl border border-border bg-surface p-5 shadow-soft flex flex-col"
                 >
-                  <h3 className="font-bold text-lg text-ink">{vac.title}</h3>
-                  <div className="mt-2 space-y-2 flex-grow">
+                  <h3 className="font-bold text-xl text-ink mb-2">{vac.title}</h3>
+                  <div className="mt-2 space-y-3 flex-grow">
                     <div>
-                      <span className="text-xs font-semibold text-muted-foreground">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                         Responsibilities
                       </span>
-                      <p className="text-xs text-ink line-clamp-3">{vac.responsibilities}</p>
+                      <p className="text-sm text-ink line-clamp-2 mt-0.5 leading-relaxed">{vac.responsibilities}</p>
                     </div>
                     <div>
-                      <span className="text-xs font-semibold text-muted-foreground">Skills</span>
-                      <p className="text-xs text-ink line-clamp-3">{vac.skills}</p>
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Skills</span>
+                      <p className="text-sm text-ink line-clamp-2 mt-0.5 leading-relaxed">{vac.skills}</p>
                     </div>
                     {vac.qualifications && (
                       <div>
-                        <span className="text-xs font-semibold text-muted-foreground">Qualifications</span>
-                        <p className="text-xs text-ink line-clamp-3">{vac.qualifications}</p>
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Qualifications</span>
+                        <p className="text-sm text-ink line-clamp-2 mt-0.5 leading-relaxed">{vac.qualifications}</p>
                       </div>
                     )}
-                    <p className="text-xs font-semibold mt-2">Status: {vac.status}</p>
+                    <div className="pt-1">
+                      <span className="text-xs font-semibold px-2.5 py-1 bg-primary/10 text-primary rounded-md inline-block">Status: {vac.status}</span>
+                    </div>
                   </div>
-                  <div className="mt-4 flex gap-2">
+                  <div className="mt-5 flex gap-2 pt-4 border-t border-border">
                     <button
                       onClick={() => setEditingVacancy(vac)}
                       className="text-xs text-primary hover:underline font-medium px-2 py-1 bg-primary/10 rounded-md"
