@@ -43,7 +43,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session?.user) {
           const gUser: User = {
-            name: session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "User",
+            name:
+              session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "User",
             email: session.user.email || "",
             picture: session.user.user_metadata?.avatar_url,
           };
@@ -52,9 +53,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
           // Clear hash and force route to admin if admin logged in and stuck on hash URL
           if (window.location.hash.includes("access_token")) {
-            window.history.replaceState(null, "", window.location.pathname + window.location.search);
-            const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
-            if (gUser.email.toLowerCase().trim() === adminEmail && window.location.pathname !== "/admin") {
+            window.history.replaceState(
+              null,
+              "",
+              window.location.pathname + window.location.search,
+            );
+            const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com")
+              .toLowerCase()
+              .trim();
+            if (
+              gUser.email.toLowerCase().trim() === adminEmail &&
+              window.location.pathname !== "/admin"
+            ) {
               window.location.href = "/admin";
             }
           }
@@ -67,17 +77,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } = supabase.auth.onAuthStateChange((_event, session) => {
         if (session?.user) {
           const gUser: User = {
-            name: session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "User",
+            name:
+              session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "User",
             email: session.user.email || "",
             picture: session.user.user_metadata?.avatar_url,
           };
           setUser(gUser);
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gUser));
-          
+
           if (_event === "SIGNED_IN" && window.location.hash.includes("access_token")) {
-            window.history.replaceState(null, "", window.location.pathname + window.location.search);
-            const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
-            if (gUser.email.toLowerCase().trim() === adminEmail && window.location.pathname !== "/admin") {
+            window.history.replaceState(
+              null,
+              "",
+              window.location.pathname + window.location.search,
+            );
+            const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com")
+              .toLowerCase()
+              .trim();
+            if (
+              gUser.email.toLowerCase().trim() === adminEmail &&
+              window.location.pathname !== "/admin"
+            ) {
               window.location.href = "/admin";
             }
           }
@@ -109,7 +129,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithEmail = (email: string) => {
-    const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+    const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com")
+      .toLowerCase()
+      .trim();
     const isMockAdmin = email.toLowerCase().trim() === adminEmail;
     const mockUser: User = {
       name: isMockAdmin ? "Qubix Administrator" : email.split("@")[0] || "Google User",

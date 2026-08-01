@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 import {
   Dialog,
   DialogContent,
@@ -24,21 +25,76 @@ export function ApplicationModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const [errorMsg, setErrorMsg] = useState("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMsg("");
     setIsSubmitting(true);
 
-    // Simulate network request
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const formData = new FormData(e.currentTarget);
+    const firstName = formData.get("firstName") as string;
+    const middleName = formData.get("middleName") as string;
+    const lastName = formData.get("lastName") as string;
+    const email = formData.get("email") as string;
+    const portfolio = formData.get("portfolio") as string;
+    const resumeFile = formData.get("resume") as File;
 
-    setIsSubmitting(false);
-    setIsSuccess(true);
+    if (!supabase) {
+      setErrorMsg("Database connection error.");
+      setIsSubmitting(false);
+      return;
+    }
 
-    // Close modal after success
-    setTimeout(() => {
-      setOpen(false);
-      setTimeout(() => setIsSuccess(false), 300); // reset state after animation
-    }, 2000);
+    try {
+      let resumeUrl = "";
+
+      // Upload Resume to Supabase Storage
+      if (resumeFile && resumeFile.size > 0) {
+        const fileExt = resumeFile.name.split(".").pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+        const { error: uploadError, data: uploadData } = await supabase.storage
+          .from("resumes")
+          .upload(fileName, resumeFile, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data } = supabase.storage.from("resumes").getPublicUrl(fileName);
+        resumeUrl = data.publicUrl;
+      }
+
+      // Insert Application to DB
+      const { error: dbError } = await supabase.from("applications").insert({
+        job_title: jobTitle,
+        first_name: firstName,
+        middle_name: middleName || null,
+        last_name: lastName,
+        email,
+        portfolio_url: portfolio || null,
+        resume_url: resumeUrl,
+      });
+
+      if (dbError) throw dbError;
+
+      setIsSuccess(true);
+
+      setTimeout(() => {
+        setOpen(false);
+        setTimeout(() => {
+          setIsSuccess(false);
+          setErrorMsg("");
+        }, 300);
+      }, 2000);
+    } catch (err: any) {
+      console.error("Application error:", err);
+      setErrorMsg(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -59,44 +115,70 @@ export function ApplicationModal({
             </div>
             <h3 className="text-xl font-bold text-ink">Application Sent!</h3>
             <p className="text-sm text-muted-foreground mt-2 max-w-[280px]">
-              Thank you for applying to Qubix Tech Nepal. Our team will review your application shortly.
+              Thank you for applying to Qubix Tech Nepal. Our team will review your application
+              shortly.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-4 space-y-5">
+            {errorMsg && (
+              <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                {errorMsg}
+              </div>
+            )}
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First name <span className="text-destructive">*</span></Label>
-                <Input id="firstName" required placeholder="John" />
+                <Label htmlFor="firstName">
+                  First name <span className="text-destructive">*</span>
+                </Label>
+                <Input id="firstName" name="firstName" required placeholder="John" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="middleName">Middle name</Label>
-                <Input id="middleName" placeholder="Christ" />
+                <Input id="middleName" name="middleName" placeholder="Christ" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last name <span className="text-destructive">*</span></Label>
-                <Input id="lastName" required placeholder="Doe" />
+                <Label htmlFor="lastName">
+                  Last name <span className="text-destructive">*</span>
+                </Label>
+                <Input id="lastName" name="lastName" required placeholder="Doe" />
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="email">Email address <span className="text-destructive">*</span></Label>
-                <Input id="email" type="email" required placeholder="john@example.com" />
+                <Label htmlFor="email">
+                  Email address <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="john@example.com"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="portfolio">Portfolio or LinkedIn</Label>
-                <Input id="portfolio" type="url" placeholder="https://linkedin.com/in/..." />
+                <Input
+                  id="portfolio"
+                  name="portfolio"
+                  type="url"
+                  placeholder="https://linkedin.com/in/..."
+                />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="resume">Resume / CV (PDF) <span className="text-destructive">*</span></Label>
-              <Input 
-                id="resume" 
-                type="file" 
-                accept=".pdf,application/pdf" 
-                required 
+              <Label htmlFor="resume">
+                Resume / CV (PDF) <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="resume"
+                name="resume"
+                type="file"
+                accept=".pdf,application/pdf"
+                required
                 className="cursor-pointer file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
               />
             </div>
@@ -106,7 +188,9 @@ export function ApplicationModal({
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting} className="min-w-[120px]">
-                {isSubmitting ? "Sending..." : (
+                {isSubmitting ? (
+                  "Sending..."
+                ) : (
                   <>
                     Submit Application <Send size={16} className="ml-2" />
                   </>

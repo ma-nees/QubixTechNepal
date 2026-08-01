@@ -36,7 +36,9 @@ function LoginPage() {
   const [emailInput, setEmailInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+  const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com")
+    .toLowerCase()
+    .trim();
   const isAdminRedirect = redirect === "/admin";
 
   // Smart Role & Secure Destination Detection upon login state change
@@ -44,13 +46,13 @@ function LoginPage() {
     if (user) {
       const userEmail = user.email.toLowerCase().trim();
       const isAdminEmail = userEmail === adminEmail;
-      
+
       let target = redirect || "/contact";
       // Strict Gate: If they try to go to /admin but are not the configured admin email, route them to /contact
       if (target.toLowerCase().includes("/admin") && !isAdminEmail) {
         target = "/contact";
       }
-      
+
       navigate({ to: target, replace: true });
     }
   }, [user, redirect, navigate, adminEmail]);
@@ -85,7 +87,11 @@ function LoginPage() {
             {/* Branded Header */}
             <div className="border-b border-border/60 bg-primary/5 p-8 text-center">
               <div className="mx-auto flex items-center justify-center gap-2.5">
-                <img src={logoUrl} alt="Qubix Tech Nepal logo" className="h-10 w-10 object-contain" />
+                <img
+                  src={logoUrl}
+                  alt="Qubix Tech Nepal logo"
+                  className="h-10 w-10 object-contain"
+                />
                 <span className="font-display text-lg font-extrabold tracking-tight text-ink">
                   Qubix Tech Nepal
                 </span>
@@ -143,11 +149,14 @@ function LoginPage() {
               <div className="flex items-center gap-2.5 text-amber-600 mb-4 bg-amber-500/10 border border-amber-500/20 px-4 py-3 rounded-2xl">
                 <AlertTriangle size={18} className="shrink-0" />
                 <p className="text-xs font-semibold leading-relaxed">
-                  Google OAuth is not enabled in your Supabase Console. Entering your email here will securely simulate authentication.
+                  Google OAuth is not enabled in your Supabase Console. Entering your email here
+                  will securely simulate authentication.
                 </p>
               </div>
 
-              <h3 className="font-display text-lg font-extrabold text-ink">Simulate Google Authentication</h3>
+              <h3 className="font-display text-lg font-extrabold text-ink">
+                Simulate Google Authentication
+              </h3>
               <p className="text-xs text-muted-foreground mt-1">
                 Type your Google account email to complete the single sign-on process.
               </p>

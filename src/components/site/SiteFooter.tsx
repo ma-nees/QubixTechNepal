@@ -32,7 +32,10 @@ export function SiteFooter() {
         console.warn("Failed to load social links", e);
       }
       try {
-        const { data: compData, error: compError } = await supabase.from("company_settings").select("*").single();
+        const { data: compData, error: compError } = await supabase
+          .from("company_settings")
+          .select("*")
+          .single();
         if (compData && !compError) {
           setCompanySettings(compData);
         }
@@ -48,12 +51,19 @@ export function SiteFooter() {
       <div className="container-page grid gap-10 py-10 sm:py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
-            <img src={logoUrl} alt="Qubix Tech Nepal logo" loading="lazy" className="h-11 w-11 object-contain" />
-            <span className="font-display text-lg font-extrabold tracking-tight text-ink">Qubix Tech Nepal</span>
+            <img
+              src={logoUrl}
+              alt="Qubix Tech Nepal logo"
+              loading="lazy"
+              className="h-11 w-11 object-contain"
+            />
+            <span className="font-display text-lg font-extrabold tracking-tight text-ink">
+              Qubix Tech Nepal
+            </span>
           </div>
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            Building Technology That Moves Nepal Forward. SaaS platforms, enterprise software, AI solutions and
-            digital products engineered in Kathmandu.
+            Building Technology That Moves Nepal Forward. SaaS platforms, enterprise software, AI
+            solutions and digital products engineered in Kathmandu.
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-3">
             <NepalBadge />
@@ -90,7 +100,10 @@ export function SiteFooter() {
             {(companySettings?.phone1 || "+977 986-6291003") && (
               <li className="flex items-start gap-2">
                 <Phone size={16} className="mt-0.5 shrink-0 text-primary" />
-                <a href={`tel:${(companySettings?.phone1 || "+977 986-6291003").replace(/[^0-9+]/g, '')}`} className="hover:text-ink">
+                <a
+                  href={`tel:${(companySettings?.phone1 || "+977 986-6291003").replace(/[^0-9+]/g, "")}`}
+                  className="hover:text-ink"
+                >
                   {companySettings?.phone1 || "+977 986-6291003"}
                 </a>
               </li>
@@ -98,7 +111,10 @@ export function SiteFooter() {
             {(companySettings?.phone2 || "+977 986-3479066") && (
               <li className="flex items-start gap-2">
                 <Phone size={16} className="mt-0.5 shrink-0 text-primary" />
-                <a href={`tel:${(companySettings?.phone2 || "+977 986-3479066").replace(/[^0-9+]/g, '')}`} className="hover:text-ink">
+                <a
+                  href={`tel:${(companySettings?.phone2 || "+977 986-3479066").replace(/[^0-9+]/g, "")}`}
+                  className="hover:text-ink"
+                >
                   {companySettings?.phone2 || "+977 986-3479066"}
                 </a>
               </li>

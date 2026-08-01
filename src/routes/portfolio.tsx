@@ -29,7 +29,10 @@ export const Route = createFileRoute("/portfolio")({
           "Explore products and software engineered by Qubix Tech Nepal: DriveSiksha, SaaS platforms, enterprise systems, fintech platforms and AI solutions.",
       },
       { property: "og:title", content: "Products & Portfolio — Qubix Tech Nepal" },
-      { property: "og:description", content: "Our products, SaaS platforms, and enterprise solutions engineered in Kathmandu." },
+      {
+        property: "og:description",
+        content: "Our products, SaaS platforms, and enterprise solutions engineered in Kathmandu.",
+      },
       { property: "og:url", content: "/portfolio" },
     ],
     links: [{ rel: "canonical", href: "/portfolio" }],
@@ -47,7 +50,14 @@ interface WorkItem {
   status?: "Live" | "Flagship" | "Deployed" | "Beta" | string;
 }
 
-const categories = ["All Work", "Flagship", "SaaS & Enterprise", "Fintech", "EdTech", "AI & Automation"] as const;
+const categories = [
+  "All Work",
+  "Flagship",
+  "SaaS & Enterprise",
+  "Fintech",
+  "EdTech",
+  "AI & Automation",
+] as const;
 
 function Portfolio() {
   const [activeTab, setActiveTab] = useState<string>("All Work");
@@ -66,8 +76,8 @@ function Portfolio() {
             category: p.category || "SaaS & Enterprise",
             badge: p.category || "Project",
             copy: p.description || "",
-            metric: p.status === "Active" ? "Currently Active" : (p.status || ""),
-            status: p.status === "Active" ? "Live" : (p.status || "Planned"),
+            metric: p.status === "Active" ? "Currently Active" : p.status || "",
+            status: p.status === "Active" ? "Live" : p.status || "Planned",
           }));
           setDbProjects(mapped);
         }
@@ -96,14 +106,16 @@ function Portfolio() {
         subtitle="Explore our flagship SaaS platforms, custom enterprise systems, fintech tools, and AI solutions engineered in Kathmandu."
       />
 
-
-
       {/* Category Tabs & Work Grid */}
       <section className="container-page py-16 sm:py-20">
         <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-display text-2xl font-extrabold text-ink sm:text-3xl">All Products & Portfolio Systems</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Filter by domain to explore solutions built by Qubix.</p>
+            <h2 className="font-display text-2xl font-extrabold text-ink sm:text-3xl">
+              All Products & Portfolio Systems
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Filter by domain to explore solutions built by Qubix.
+            </p>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none sm:pb-0">
@@ -140,8 +152,12 @@ function Portfolio() {
                       </span>
                     )}
                   </div>
-                  <h3 className="mt-3 font-display text-xl font-extrabold text-ink">{item.title}</h3>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">{item.copy}</p>
+                  <h3 className="mt-3 font-display text-xl font-extrabold text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                    {item.copy}
+                  </p>
                 </div>
 
                 <div className="mt-6 border-t border-border/50 pt-4">

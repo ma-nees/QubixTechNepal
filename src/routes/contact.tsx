@@ -1,7 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import emailjs from "@emailjs/browser";
-import { Clock, Mail, MapPin, Phone, Send, Loader2, CheckCircle2, AlertCircle, LogIn, icons } from "lucide-react";
+import {
+  Clock,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  LogIn,
+  icons,
+} from "lucide-react";
 import { PageShell, PageHero, SectionHeading, CtaBand } from "@/components/site/PageShell";
 import { Reveal } from "@/components/site/Reveal";
 import { useAuth } from "@/lib/auth-context";
@@ -27,10 +38,22 @@ export const Route = createFileRoute("/contact")({
 });
 
 const faqs = [
-  ["How quickly can you start?", "Most engagements begin within two to three weeks of a signed scope, sooner for discovery work."],
-  ["Do you work with clients outside Nepal?", "Yes. We deliver for teams across Asia, Europe and Australia with overlapping working hours."],
-  ["Can you take over an existing codebase?", "Often. We start with an architecture and security review, then propose a stabilisation plan."],
-  ["Do you offer ongoing support?", "Yes — support and maintenance retainers include monitoring, patching and a response SLA."],
+  [
+    "How quickly can you start?",
+    "Most engagements begin within two to three weeks of a signed scope, sooner for discovery work.",
+  ],
+  [
+    "Do you work with clients outside Nepal?",
+    "Yes. We deliver for teams across Asia, Europe and Australia with overlapping working hours.",
+  ],
+  [
+    "Can you take over an existing codebase?",
+    "Often. We start with an architecture and security review, then propose a stabilisation plan.",
+  ],
+  [
+    "Do you offer ongoing support?",
+    "Yes — support and maintenance retainers include monitoring, patching and a response SLA.",
+  ],
 ] as const;
 
 export function Contact() {
@@ -53,7 +76,10 @@ export function Contact() {
         console.warn("Failed to load social links", e);
       }
       try {
-        const { data: compData, error: compError } = await supabase.from("company_settings").select("*").single();
+        const { data: compData, error: compError } = await supabase
+          .from("company_settings")
+          .select("*")
+          .single();
         if (compData && !compError) {
           setCompanySettings(compData);
         }
@@ -99,7 +125,7 @@ export function Contact() {
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         templateParams,
-        EMAILJS_PUBLIC_KEY
+        EMAILJS_PUBLIC_KEY,
       );
       console.log("EmailJS Success:", res);
       // 1. Insert into Supabase DB table "messages"
@@ -189,7 +215,14 @@ export function Contact() {
             </div>
 
             {/* Hidden field for {{time}} variable in EmailJS template */}
-            <input type="hidden" name="time" value={new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })} />
+            <input
+              type="hidden"
+              name="time"
+              value={new Date().toLocaleString("en-US", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            />
 
             {/* Hidden field for {{email}} variable attached from Google Auth */}
             <input type="hidden" name="email" value={user?.email || ""} />
@@ -317,7 +350,10 @@ export function Contact() {
                 {(companySettings?.phone1 || "+977 986-6291003") && (
                   <li className="flex items-start gap-3">
                     <Phone size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-                    <a href={`tel:${(companySettings?.phone1 || "+977 986-6291003").replace(/[^0-9+]/g, '')}`} className="hover:text-ink">
+                    <a
+                      href={`tel:${(companySettings?.phone1 || "+977 986-6291003").replace(/[^0-9+]/g, "")}`}
+                      className="hover:text-ink"
+                    >
                       {companySettings?.phone1 || "+977 986-6291003"}
                     </a>
                   </li>
@@ -325,7 +361,10 @@ export function Contact() {
                 {(companySettings?.phone2 || "+977 986-3479066") && (
                   <li className="flex items-start gap-3">
                     <Phone size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-                    <a href={`tel:${(companySettings?.phone2 || "+977 986-3479066").replace(/[^0-9+]/g, '')}`} className="hover:text-ink">
+                    <a
+                      href={`tel:${(companySettings?.phone2 || "+977 986-3479066").replace(/[^0-9+]/g, "")}`}
+                      className="hover:text-ink"
+                    >
                       {companySettings?.phone2 || "+977 986-3479066"}
                     </a>
                   </li>
@@ -372,7 +411,10 @@ export function Contact() {
             <div className="overflow-hidden rounded-3xl border border-border bg-surface">
               <iframe
                 title="Qubix Tech Nepal office location"
-                src={companySettings?.map_embed_url || "https://www.google.com/maps?q=Kamalpokhari,+Kathmandu,+Nepal&output=embed"}
+                src={
+                  companySettings?.map_embed_url ||
+                  "https://www.google.com/maps?q=Kamalpokhari,+Kathmandu,+Nepal&output=embed"
+                }
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="h-72 w-full border-0"

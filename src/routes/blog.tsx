@@ -29,7 +29,10 @@ export const Route = createFileRoute("/blog")({
           "Curated articles, engineering dispatches, AI practical notes, and product insights served fresh from the team at Qubix Tech Nepal.",
       },
       { property: "og:title", content: "Bistro & Engineering Journal — Qubix Tech Nepal" },
-      { property: "og:description", content: "Engineering and product writing from Qubix Tech Nepal, served bistro style." },
+      {
+        property: "og:description",
+        content: "Engineering and product writing from Qubix Tech Nepal, served bistro style.",
+      },
       { property: "og:url", content: "/blog" },
     ],
     links: [{ rel: "canonical", href: "/blog" }],
@@ -120,7 +123,15 @@ const posts: Post[] = [
   },
 ];
 
-const categories = ["All Courses", "Engineering", "Product", "AI", "Craft", "Team", "Security"] as const;
+const categories = [
+  "All Courses",
+  "Engineering",
+  "Product",
+  "AI",
+  "Craft",
+  "Team",
+  "Security",
+] as const;
 
 const espressoShots = [
   { title: "PostgreSQL RLS for Tenant Isolation", time: "1 min read" },
@@ -170,14 +181,18 @@ export function Blog() {
                 Engineering & Product served fresh daily.
               </h1>
               <p className="mt-3 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Curated insights, architectural patterns, and real-world software lessons engineered in Kathmandu.
+                Curated insights, architectural patterns, and real-world software lessons engineered
+                in Kathmandu.
               </p>
             </div>
 
             {/* Bistro Search Bar */}
             <div className="w-full lg:w-80">
               <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+                <Search
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  size={18}
+                />
                 <input
                   type="text"
                   placeholder="Search articles & topics..."
@@ -199,10 +214,11 @@ export function Blog() {
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`rounded-full px-4 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${selectedCategory === cat
+                className={`rounded-full px-4 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
+                  selectedCategory === cat
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "bg-surface text-muted-foreground border border-border hover:border-primary/40 hover:text-ink"
-                  }`}
+                }`}
               >
                 {cat}
               </button>
@@ -251,7 +267,9 @@ export function Blog() {
                       </div>
                       <div>
                         <div className="text-xs font-bold text-ink">{featuredPost.author.name}</div>
-                        <div className="text-[11px] text-muted-foreground">{featuredPost.author.role}</div>
+                        <div className="text-[11px] text-muted-foreground">
+                          {featuredPost.author.role}
+                        </div>
                       </div>
                     </div>
                     <a
@@ -273,7 +291,9 @@ export function Blog() {
           <div className="lg:col-span-8">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="font-display text-xl font-extrabold text-ink">
-                {selectedCategory === "All Courses" ? "Full Menu & Dispatches" : `${selectedCategory} Articles`}
+                {selectedCategory === "All Courses"
+                  ? "Full Menu & Dispatches"
+                  : `${selectedCategory} Articles`}
               </h2>
               <span className="text-xs text-muted-foreground">
                 Showing {filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"}
@@ -283,7 +303,9 @@ export function Blog() {
             {filteredPosts.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border bg-surface/50 p-12 text-center">
                 <Search size={32} className="mx-auto text-muted-foreground opacity-50" />
-                <h3 className="mt-4 font-display text-base font-bold text-ink">No articles found</h3>
+                <h3 className="mt-4 font-display text-base font-bold text-ink">
+                  No articles found
+                </h3>
                 <p className="mt-1 text-xs text-muted-foreground">
                   Try adjusting your search query or switching menu categories.
                 </p>
@@ -332,7 +354,9 @@ export function Blog() {
                             <div className="grid size-7 place-items-center rounded-full bg-secondary text-[10px] font-bold text-ink">
                               {post.author.avatar}
                             </div>
-                            <span className="font-medium text-muted-foreground">{post.author.name}</span>
+                            <span className="font-medium text-muted-foreground">
+                              {post.author.name}
+                            </span>
                           </div>
                           <span className="text-[11px] text-muted-foreground">{post.date}</span>
                         </div>
@@ -349,10 +373,14 @@ export function Blog() {
             {/* Espresso Shots / Quick Bites */}
             <div className="rounded-2xl border border-border bg-surface p-6 shadow-soft">
               <div className="flex items-center gap-2 font-display text-sm font-bold text-ink">
-                <span className="grid size-7 place-items-center rounded-lg bg-secondary text-ink">☕</span>
+                <span className="grid size-7 place-items-center rounded-lg bg-secondary text-ink">
+                  ☕
+                </span>
                 Espresso Shots (Quick Reads)
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">Bite-sized technical notes from our sprint cycles.</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Bite-sized technical notes from our sprint cycles.
+              </p>
               <ul className="mt-4 divide-y divide-border/60">
                 {espressoShots.map((shot) => (
                   <li key={shot.title} className="py-3 first:pt-0 last:pb-0">
@@ -400,14 +428,18 @@ export function Blog() {
             {/* Bistro Newsletter Box */}
             <div className="hero-wash relative overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-soft">
               <div className="relative">
-                <h3 className="font-display text-base font-extrabold text-ink">Subscribe to the Bistro Dispatch</h3>
+                <h3 className="font-display text-base font-extrabold text-ink">
+                  Subscribe to the Bistro Dispatch
+                </h3>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  Get our bi-weekly engineering essays and tech breakdowns delivered straight to your inbox. No spam.
+                  Get our bi-weekly engineering essays and tech breakdowns delivered straight to
+                  your inbox. No spam.
                 </p>
 
                 {subscribed ? (
                   <div className="mt-4 flex items-center gap-2 rounded-xl bg-secondary/80 p-3 text-xs font-semibold text-ink">
-                    <CheckCircle2 size={16} className="text-primary" /> You're on the list! Bon appétit.
+                    <CheckCircle2 size={16} className="text-primary" /> You're on the list! Bon
+                    appétit.
                   </div>
                 ) : (
                   <form onSubmit={handleSubscribe} className="mt-4 space-y-2">

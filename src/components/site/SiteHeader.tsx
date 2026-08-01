@@ -18,8 +18,10 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { user, logout } = useAuth();
-  
-  const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com").toLowerCase().trim();
+
+  const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com")
+    .toLowerCase()
+    .trim();
   const isAdmin = user?.email.toLowerCase().trim() === adminEmail;
 
   useEffect(() => {
@@ -39,8 +41,16 @@ export function SiteHeader() {
     >
       <div className="container-page flex items-center justify-between gap-3 py-2.5 sm:py-3">
         <div className="flex lg:flex-1">
-          <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-2.5" aria-label="Qubix Tech Nepal home">
-            <img src={logoUrl} alt="Qubix Tech Nepal logo" className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" />
+          <Link
+            to="/"
+            className="flex min-w-0 items-center gap-2 sm:gap-2.5"
+            aria-label="Qubix Tech Nepal home"
+          >
+            <img
+              src={logoUrl}
+              alt="Qubix Tech Nepal logo"
+              className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10"
+            />
             <span className="truncate font-display text-sm font-extrabold tracking-tight text-ink sm:text-base">
               Qubix Tech Nepal
             </span>
@@ -120,7 +130,11 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <nav id="mobile-nav" aria-label="Mobile" className="container-page max-h-[calc(100vh-4rem)] overflow-y-auto pb-6 lg:hidden">
+        <nav
+          id="mobile-nav"
+          aria-label="Mobile"
+          className="container-page max-h-[calc(100vh-4rem)] overflow-y-auto pb-6 lg:hidden"
+        >
           <ul className="grid gap-1 border-t border-border/60 pt-3">
             {nav.map((item) => (
               <li key={item.to}>

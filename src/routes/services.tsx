@@ -25,7 +25,10 @@ export const Route = createFileRoute("/services")({
           "Custom software, SaaS development, AI, cloud, web, mobile, database design, UI/UX, cyber security and IT consulting from Qubix Tech Nepal.",
       },
       { property: "og:title", content: "Services — Qubix Tech Nepal" },
-      { property: "og:description", content: "Ten engineering and design services delivered end to end." },
+      {
+        property: "og:description",
+        content: "Ten engineering and design services delivered end to end.",
+      },
       { property: "og:url", content: "/services" },
     ],
     links: [{ rel: "canonical", href: "/services" }],
@@ -33,15 +36,35 @@ export const Route = createFileRoute("/services")({
 });
 
 const services = [
-  [Code2, "Custom Software", "Bespoke systems for operations, logistics, finance and internal workflows."],
-  [Layers, "SaaS Development", "Multi-tenant architecture, billing, roles and analytics built for scale."],
-  [BrainCircuit, "AI Solutions", "Document intelligence, forecasting, assistants and workflow automation."],
-  [Cloud, "Cloud Solutions", "Infrastructure as code, CI/CD pipelines, monitoring and cost control."],
+  [
+    Code2,
+    "Custom Software",
+    "Bespoke systems for operations, logistics, finance and internal workflows.",
+  ],
+  [
+    Layers,
+    "SaaS Development",
+    "Multi-tenant architecture, billing, roles and analytics built for scale.",
+  ],
+  [
+    BrainCircuit,
+    "AI Solutions",
+    "Document intelligence, forecasting, assistants and workflow automation.",
+  ],
+  [
+    Cloud,
+    "Cloud Solutions",
+    "Infrastructure as code, CI/CD pipelines, monitoring and cost control.",
+  ],
   [Globe, "Web Development", "Performance-first, accessible and SEO-ready web platforms."],
   [Smartphone, "Mobile Apps", "Android and iOS applications with offline-aware experiences."],
   [Database, "Database Design", "Normalised, indexed, migration-safe data models built to grow."],
   [PenTool, "UI/UX Design", "Research, design systems and interfaces that feel effortless."],
-  [ShieldCheck, "Cyber Security", "Audits, hardening, penetration testing and secure release practice."],
+  [
+    ShieldCheck,
+    "Cyber Security",
+    "Audits, hardening, penetration testing and secure release practice.",
+  ],
   [Lightbulb, "IT Consulting", "Technology strategy, architecture reviews and team enablement."],
 ] as const;
 

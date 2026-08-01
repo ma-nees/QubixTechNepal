@@ -31,7 +31,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Qubix Tech Nepal | Software, SaaS & AI Solutions" },
       {
         property: "og:description",
-        content: "Building Technology That Moves Nepal Forward — SaaS, enterprise software and AI, engineered in Kathmandu.",
+        content:
+          "Building Technology That Moves Nepal Forward — SaaS, enterprise software and AI, engineered in Kathmandu.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -40,11 +41,31 @@ export const Route = createFileRoute("/")({
 });
 
 const services = [
-  { icon: Code2, title: "Custom Software", copy: "Systems engineered around your operations, not a template." },
-  { icon: Layers, title: "SaaS Development", copy: "Multi-tenant products built to scale from day one." },
-  { icon: BrainCircuit, title: "AI Solutions", copy: "Practical intelligence: automation, insight, assistants." },
-  { icon: Cloud, title: "Cloud Solutions", copy: "Resilient infrastructure, CI/CD and observability." },
-  { icon: Globe, title: "Web Development", copy: "Fast, accessible, search-ready web experiences." },
+  {
+    icon: Code2,
+    title: "Custom Software",
+    copy: "Systems engineered around your operations, not a template.",
+  },
+  {
+    icon: Layers,
+    title: "SaaS Development",
+    copy: "Multi-tenant products built to scale from day one.",
+  },
+  {
+    icon: BrainCircuit,
+    title: "AI Solutions",
+    copy: "Practical intelligence: automation, insight, assistants.",
+  },
+  {
+    icon: Cloud,
+    title: "Cloud Solutions",
+    copy: "Resilient infrastructure, CI/CD and observability.",
+  },
+  {
+    icon: Globe,
+    title: "Web Development",
+    copy: "Fast, accessible, search-ready web experiences.",
+  },
   { icon: Smartphone, title: "Mobile Apps", copy: "Native-grade Android and iOS applications." },
 ];
 
@@ -52,7 +73,10 @@ function Home() {
   return (
     <PageShell>
       <section className="hero-wash relative overflow-hidden border-b border-border">
-        <div className="contour pointer-events-none absolute inset-x-0 -bottom-24 h-72 opacity-30" aria-hidden="true" />
+        <div
+          className="contour pointer-events-none absolute inset-x-0 -bottom-24 h-72 opacity-30"
+          aria-hidden="true"
+        />
         <div className="container-page relative grid items-center gap-8 py-10 sm:gap-12 sm:py-16 lg:grid-cols-[1.05fr_1fr]">
           <div>
             <NepalBadge />
@@ -60,8 +84,8 @@ function Home() {
               Building Technology That Moves Nepal Forward.
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
-              We build innovative SaaS platforms, enterprise software, AI solutions, and digital products that
-              empower businesses across Nepal and beyond.
+              We build innovative SaaS platforms, enterprise software, AI solutions, and digital
+              products that empower businesses across Nepal and beyond.
             </p>
             <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-3">
               <a
@@ -120,8 +144,12 @@ function Home() {
                 <span className="grid size-10 place-items-center rounded-xl bg-secondary/60 text-ink sm:size-11">
                   <s.icon size={20} aria-hidden="true" />
                 </span>
-                <h3 className="mt-4 font-display text-base font-bold text-ink sm:mt-5 sm:text-lg">{s.title}</h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground sm:mt-2 sm:text-sm">{s.copy}</p>
+                <h3 className="mt-4 font-display text-base font-bold text-ink sm:mt-5 sm:text-lg">
+                  {s.title}
+                </h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground sm:mt-2 sm:text-sm">
+                  {s.copy}
+                </p>
               </div>
             </Reveal>
           ))}
@@ -136,8 +164,6 @@ function Home() {
         </Reveal>
       </section>
 
-
-
       <section className="container-page py-12 sm:py-20">
         <Reveal>
           <SectionHeading
@@ -147,8 +173,16 @@ function Home() {
         </Reveal>
         <ul className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 md:grid-cols-3">
           {[
-            [Boxes, "Product thinking", "We ship outcomes, not tickets — scoped, measured and iterated."],
-            [ShieldCheck, "Secure by default", "Threat modelling, least privilege and audited releases."],
+            [
+              Boxes,
+              "Product thinking",
+              "We ship outcomes, not tickets — scoped, measured and iterated.",
+            ],
+            [
+              ShieldCheck,
+              "Secure by default",
+              "Threat modelling, least privilege and audited releases.",
+            ],
             [Database, "Built to last", "Clean data models and documentation your team can own."],
           ].map(([Icon, title, copy], i) => {
             const I = Icon as typeof Boxes;
@@ -156,8 +190,12 @@ function Home() {
               <Reveal as="li" key={title as string} delay={i * 70}>
                 <div className="lift h-full rounded-2xl border border-border bg-surface p-5 sm:p-7">
                   <I size={22} className="text-primary" aria-hidden="true" />
-                  <h3 className="mt-4 font-display text-base font-bold text-ink sm:mt-5 sm:text-lg">{title as string}</h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground sm:mt-2 sm:text-sm">{copy as string}</p>
+                  <h3 className="mt-4 font-display text-base font-bold text-ink sm:mt-5 sm:text-lg">
+                    {title as string}
+                  </h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground sm:mt-2 sm:text-sm">
+                    {copy as string}
+                  </p>
                 </div>
               </Reveal>
             );
