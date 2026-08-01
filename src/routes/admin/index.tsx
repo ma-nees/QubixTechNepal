@@ -796,11 +796,32 @@ function AdminPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 {
+                  title: "Total Projects",
+                  value: projects.length.toString(),
+                  change: "Portfolio systems",
+                  icon: FolderKanban,
+                  color: "text-indigo-600 bg-indigo-50",
+                },
+                {
                   title: "Total Inquiries",
                   value: messages.length.toString(),
                   change: "From contact form",
                   icon: Mail,
                   color: "text-blue-600 bg-blue-50",
+                },
+                {
+                  title: "Active Vacancies",
+                  value: vacancies.filter(v => v.status === "Active").length.toString(),
+                  change: "Open positions",
+                  icon: Briefcase,
+                  color: "text-emerald-600 bg-emerald-50",
+                },
+                {
+                  title: "Job Applications",
+                  value: applications.length.toString(),
+                  change: "Total received",
+                  icon: FileText,
+                  color: "text-amber-600 bg-amber-50",
                 },
               ].map((stat) => {
                 const Icon = stat.icon;
