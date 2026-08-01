@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Bot, X, Sparkles, Send, Minimize2, Loader2, User } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
 
 type Message = {
   role: "system" | "user" | "assistant";
@@ -11,14 +12,23 @@ export function FloatingAiAssistant() {
   const [isHovered, setIsHovered] = useState(false);
   const [isWaOpen, setIsWaOpen] = useState(false);
   
+  const { user } = useAuth();
+
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { 
-      role: "assistant", 
-      content: "Hi there! 👋 I'm the Qubix AI Assistant. How can I help you with your software or cloud infrastructure needs today?" 
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    setMessages(prev => {
+      if (prev.length <= 1) {
+        const greeting = user?.name 
+          ? `Hi ${user.name.split(" ")[0]}! 👋 I'm the Qubix AI Assistant. How can I help you today?` 
+          : `Hi there! 👋 I'm the Qubix AI Assistant. How can I help you with your software or cloud infrastructure needs today?`;
+        return [{ role: "assistant", content: greeting }];
+      }
+      return prev;
+    });
+  }, [user?.name]);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +59,7 @@ export function FloatingAiAssistant() {
     try {
       const systemMessage: Message = {
         role: "system",
-        content: "You are the AI Assistant for Qubix Tech Nepal. Be concise, friendly, and helpful. You answer questions about Qubix's software development, SaaS, and cloud infrastructure services. When listing items, use bullet points. Otherwise, use short paragraphs. Keep your formatting clean and readable for a small chat interface."
+        content: `You are the AI Assistant for Qubix Tech Nepal.${user?.name ? ` You are currently talking to a user named ${user.name}. Greet them personally if it makes sense.` : ''} Be concise, friendly, and helpful. You answer questions about Qubix's software development, SaaS, and cloud infrastructure services. When listing items, use bullet points. Otherwise, use short paragraphs. Keep your formatting clean and readable for a small chat interface.`
       };
 
       const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
