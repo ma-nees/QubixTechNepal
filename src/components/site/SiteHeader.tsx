@@ -17,6 +17,7 @@ const nav = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const { user, logout } = useAuth();
 
   const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "qubixtechnepal@gmail.com")
@@ -77,12 +78,13 @@ export function SiteHeader() {
                 type="button"
                 className="grid size-9 place-items-center rounded-full border border-border bg-surface text-ink shadow-xs transition-all hover:border-primary hover:bg-secondary/40"
                 title={`${user.name} (${user.email})`}
+                onClick={() => setProfileOpen(!profileOpen)}
               >
                 <UserCircle2 size={20} className="text-primary" />
               </button>
 
               {/* Hover Profile Dropdown */}
-              <div className="absolute right-0 top-full mt-2 hidden w-48 rounded-2xl border border-border bg-surface p-3 shadow-xl group-hover:block transition-all z-50">
+              <div className={`absolute right-0 top-full mt-2 w-48 rounded-2xl border border-border bg-surface p-3 shadow-xl transition-all z-50 ${profileOpen ? "block" : "hidden lg:group-hover:block"}`}>
                 <div className="flex items-center gap-2 pb-2 border-b border-border/50">
                   <UserCircle2 size={18} className="text-primary shrink-0" />
                   <div className="min-w-0">
@@ -93,6 +95,7 @@ export function SiteHeader() {
                 {isAdmin && (
                   <Link
                     to="/admin"
+                    onClick={() => setProfileOpen(false)}
                     className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary/10 py-1.5 text-xs font-bold text-primary hover:bg-primary/20 transition-colors"
                   >
                     <ShieldCheck size={12} /> Admin Panel
@@ -100,7 +103,10 @@ export function SiteHeader() {
                 )}
                 <button
                   type="button"
-                  onClick={logout}
+                  onClick={() => {
+                    logout();
+                    setProfileOpen(false);
+                  }}
                   className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl bg-destructive/10 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 transition-colors"
                 >
                   <LogOut size={12} /> Sign out
@@ -147,40 +153,7 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
-            {user ? (
-              <li className="mt-2 pt-2 border-t border-border/40 px-3.5 py-2">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2.5">
-                    <UserCircle2 size={22} className="text-primary shrink-0" />
-                    <div className="min-w-0">
-                      <p className="truncate text-xs font-bold text-ink">{user.name}</p>
-                      <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {isAdmin && (
-                    <Link
-                      to="/admin"
-                      onClick={() => setOpen(false)}
-                      className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary/10 px-2.5 py-2 text-xs font-semibold text-primary hover:bg-primary/20"
-                    >
-                      <ShieldCheck size={14} /> Admin Dashboard
-                    </Link>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      logout();
-                      setOpen(false);
-                    }}
-                    className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-destructive/10 px-2.5 py-2 text-xs font-semibold text-destructive hover:bg-destructive/20"
-                  >
-                    <LogOut size={14} /> Sign out
-                  </button>
-                </div>
-              </li>
-            ) : null}
+
             <li className="mt-1">
               <Link
                 to="/contact"
