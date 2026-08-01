@@ -7,6 +7,65 @@ type Message = {
   content: string;
 };
 
+const GREETINGS = [
+  "👋 Hi! Welcome to Qubix. How can I help you today?",
+  "👋 Welcome! What can I help you with today?",
+  "🤖 Hello! I'm your Qubix AI Assistant.",
+  "👋 Great to see you! How can I assist you?",
+  "🚀 Welcome to Qubix! Let's get started.",
+  "✨ Hi there! What brings you here today?",
+  "💬 Hello! Feel free to ask me anything.",
+  "🌟 Welcome! I'm here whenever you need me.",
+  "👋 Hi! How can I make your day easier?",
+  "🤝 Welcome to Qubix. What are you looking for?",
+  "🚀 Need a hand? I'm here to help.",
+  "👋 Welcome back! Ready to continue?",
+  "💡 Looking for something? Just ask.",
+  "🤖 Hi! Let's find what you need.",
+  "🌍 Welcome! How can I assist you today?",
+  "👋 Happy to have you here. What can I do for you?",
+  "✨ Hi there! Let's make things simple.",
+  "🚀 Welcome! Tell me what you're working on.",
+  "🤝 Hi! How may I assist you today?",
+  "💬 Ask me anything—I'm ready to help.",
+  "👋 Welcome to Qubix! Let's make things happen.",
+  "🌟 Hi! I'm here to answer your questions.",
+  "🤖 Hello! Your AI assistant is ready.",
+  "🚀 Let's get started. What do you need?",
+  "👋 Need guidance? I'm just a message away.",
+  "💡 Welcome! Let's find the right solution.",
+  "🌍 Hi! I'm here to make things easier.",
+  "🤝 Welcome! How can I support you today?",
+  "✨ Hi! What would you like to explore?",
+  "🚀 Welcome to Qubix. Let's build something amazing.",
+  "✨ Welcome to Qubix! Let's build something amazing together.",
+  "🌍 Hello! What are you looking to accomplish today?",
+  "🎯 Hi! Tell me what you need, and I'll do my best to help.",
+  "💼 Welcome! I'm here to simplify your workflow.",
+  "🔍 Looking for something? I'm here to help you find it.",
+  "🌈 Welcome! Let's turn your ideas into reality.",
+  "🛠️ Need assistance? I'm here whenever you need me.",
+  "💙 Hi! I'm your Qubix AI Assistant. Ask me anything.",
+  "📈 Welcome! Let's help your business grow smarter.",
+  "⭐ Hello and welcome! How can I make your experience better today?"
+];
+
+const getRandomGreeting = (name?: string) => {
+  const greeting = GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
+  if (!name) return greeting;
+  const firstName = name.split(" ")[0];
+  
+  if (greeting.includes("Hi!")) return greeting.replace("Hi!", `Hi ${firstName}!`);
+  if (greeting.includes("Hello!")) return greeting.replace("Hello!", `Hello ${firstName}!`);
+  if (greeting.includes("Welcome!")) return greeting.replace("Welcome!", `Welcome ${firstName}!`);
+  if (greeting.includes("Hi there!")) return greeting.replace("Hi there!", `Hi ${firstName}!`);
+  if (greeting.includes("Welcome back!")) return greeting.replace("Welcome back!", `Welcome back ${firstName}!`);
+  
+  const parts = greeting.split(" ");
+  return `${parts[0]} ${firstName}! ${parts.slice(1).join(" ")}`;
+};
+
+
 export function FloatingAiAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -29,10 +88,7 @@ export function FloatingAiAssistant() {
   useEffect(() => {
     setMessages(prev => {
       if (prev.length <= 1) {
-        const greeting = user?.name 
-          ? `Hi ${user.name.split(" ")[0]}! 👋 I'm the Qubix AI Assistant. How can I help you today?` 
-          : `Hi there! 👋 I'm the Qubix AI Assistant. How can I help you with your software or cloud infrastructure needs today?`;
-        return [{ role: "assistant", content: greeting }];
+        return [{ role: "assistant", content: getRandomGreeting(user?.name) }];
       }
       return prev;
     });
@@ -249,10 +305,8 @@ When listing items, use bullet points. Otherwise, use short paragraphs. Keep you
             <X size={10} />
           </button>
           <div className="flex items-start gap-2">
-            <span className="text-xl">👋</span>
             <p className="font-medium leading-relaxed">
-              {user?.name ? `Hi ${user.name.split(" ")[0]}! ` : "Hi there! "} 
-              I'm the Qubix AI Assistant. Need any help?
+              {getRandomGreeting(user?.name)}
             </p>
           </div>
         </div>
