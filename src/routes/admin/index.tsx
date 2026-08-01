@@ -215,9 +215,9 @@ function AdminPage() {
               message: item.message || "",
               date: item.created_at
                 ? new Date(item.created_at).toLocaleString("en-US", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })
                 : "Just now",
               status: (item.status as "new" | "replied" | "archived") || "new",
             }));
@@ -783,11 +783,10 @@ function AdminPage() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all shrink-0 ${
-                  activeTab === tab.id
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "bg-surface text-muted-foreground border border-border hover:text-ink"
-                }`}
+                className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all shrink-0 ${activeTab === tab.id
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-surface text-muted-foreground border border-border hover:text-ink"
+                  }`}
               >
                 <Icon size={14} />
                 {tab.label}
@@ -852,13 +851,12 @@ function AdminPage() {
                         <p className="text-xs text-muted-foreground">{msg.subject}</p>
                       </div>
                       <span
-                        className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
-                          msg.status === "new"
-                            ? "bg-blue-100 text-blue-800"
-                            : msg.status === "replied"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : "bg-gray-100 text-gray-700"
-                        }`}
+                        className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${msg.status === "new"
+                          ? "bg-blue-100 text-blue-800"
+                          : msg.status === "replied"
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-gray-100 text-gray-700"
+                          }`}
                       >
                         {msg.status}
                       </span>
@@ -929,11 +927,10 @@ function AdminPage() {
                   <div
                     key={msg.id}
                     onClick={() => setSelectedMessage(msg)}
-                    className={`cursor-pointer rounded-2xl p-4 transition-all border ${
-                      selectedMessage?.id === msg.id
-                        ? "border-primary bg-primary/5 shadow-xs"
-                        : "border-border/60 bg-background hover:border-border"
-                    }`}
+                    className={`cursor-pointer rounded-2xl p-4 transition-all border ${selectedMessage?.id === msg.id
+                      ? "border-primary bg-primary/5 shadow-xs"
+                      : "border-border/60 bg-background hover:border-border"
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-extrabold text-ink">{msg.name}</span>
@@ -1061,9 +1058,8 @@ function AdminPage() {
 
         {/* Slide-in toast panel for adding a project */}
         <div
-          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-            showAddProject ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${showAddProject ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between border-b border-border p-5">
@@ -1193,9 +1189,8 @@ function AdminPage() {
 
         {/* Edit Project slide-in panel */}
         <div
-          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-            editingProject ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${editingProject ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {editingProject && (
             <div className="flex flex-col h-full">
@@ -1333,7 +1328,7 @@ function AdminPage() {
           <div className="fixed inset-0 bg-black/30 z-40" onClick={() => setEditingProject(null)} />
         )}
 
-        
+
         {/* Add Vacancy Modal */}
         {showAddVacancy && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
@@ -1411,7 +1406,7 @@ function AdminPage() {
                           setNewVacancyData({ title: "", responsibilities: "", skills: "", qualifications: "", status: "Active" });
                           setToast({ type: "success", message: "Vacancy added successfully!" });
                         }
-                      } catch(e) {
+                      } catch (e) {
                         console.error(e);
                       }
                       setAddVacancyLoading(false);
@@ -1508,7 +1503,7 @@ function AdminPage() {
                         } else {
                           setToast({ type: "error", message: "Failed to update vacancy." });
                         }
-                      } catch(e) {
+                      } catch (e) {
                         console.error(e);
                         setToast({ type: "error", message: "Failed to update vacancy." });
                       }
@@ -1548,7 +1543,7 @@ function AdminPage() {
                       setVacancies(vacancies.filter((v) => v.id !== deletingVacancyId));
                       setToast({ type: "success", message: "Vacancy deleted." });
                       setDeletingVacancyId(null);
-                    } catch(e) {}
+                    } catch (e) { }
                     setDeleteVacancyLoading(false);
                   }}
                   disabled={deleteVacancyLoading}
@@ -1586,7 +1581,7 @@ function AdminPage() {
                       setApplications(applications.filter((a) => a.id !== deleteApplicationId));
                       setToast({ type: "success", message: "Application deleted." });
                       setDeleteApplicationId(null);
-                    } catch(e) {}
+                    } catch (e) { }
                     setDeleteAppLoading(false);
                   }}
                   disabled={deleteAppLoading}
@@ -1741,7 +1736,7 @@ function AdminPage() {
           </div>
         )}
 
-        
+
         {/* Applications Tab */}
         {activeTab === "applications" && (
           <div className="mt-8">
@@ -1768,16 +1763,16 @@ function AdminPage() {
                     </div>
                     <div className="flex flex-col md:flex-row items-end md:items-center gap-3">
                       {app.resume_url && (
-                        <a 
-                          href={app.resume_url} 
-                          target="_blank" 
+                        <a
+                          href={app.resume_url}
+                          target="_blank"
                           rel="noreferrer"
                           className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
                         >
                           View Resume
                         </a>
                       )}
-                      <select 
+                      <select
                         value={app.status || "new"}
                         onChange={(e) => {
                           const newStatus = e.target.value;
@@ -1871,7 +1866,7 @@ function AdminPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-semibold text-ink mb-1.5">
-                          Primary Phone
+                          Primary Phone( CO-Founder )
                         </label>
                         <input
                           className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary"
@@ -1884,7 +1879,7 @@ function AdminPage() {
                       </div>
                       <div>
                         <label className="block text-xs font-semibold text-ink mb-1.5">
-                          Secondary Phone
+                          Secondary Phone( Founder )
                         </label>
                         <input
                           className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary"
@@ -1945,7 +1940,7 @@ function AdminPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="rounded-2xl border border-border p-4 bg-background">
                         <div className="font-semibold text-muted-foreground mb-1">
-                          Primary Phone
+                          Primary Phone( CO-Founder )
                         </div>
                         <div className="font-medium text-ink">
                           {companySettings?.phone1 || "+977 986-6291003 (Default)"}
@@ -1953,7 +1948,7 @@ function AdminPage() {
                       </div>
                       <div className="rounded-2xl border border-border p-4 bg-background">
                         <div className="font-semibold text-muted-foreground mb-1">
-                          Secondary Phone
+                          Secondary Phone( Founder )
                         </div>
                         <div className="font-medium text-ink">
                           {companySettings?.phone2 || "+977 986-3479066 (Default)"}
@@ -1969,9 +1964,8 @@ function AdminPage() {
 
         {/* Slide-in toast panel for adding a social link */}
         <div
-          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-            showAddSocialLink ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${showAddSocialLink ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between border-b border-border p-5">
@@ -2053,9 +2047,8 @@ function AdminPage() {
 
         {/* Edit Social Link slide-in panel */}
         <div
-          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-            editingSocialLink ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface border-l border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${editingSocialLink ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {editingSocialLink && (
             <div className="flex flex-col h-full">
@@ -2083,10 +2076,10 @@ function AdminPage() {
                         setEditingSocialLink((prev) =>
                           prev
                             ? {
-                                ...prev,
-                                name: platform ? platform.name : e.target.value,
-                                icon: platform ? platform.icon : prev.icon,
-                              }
+                              ...prev,
+                              name: platform ? platform.name : e.target.value,
+                              icon: platform ? platform.icon : prev.icon,
+                            }
                             : null,
                         );
                       }}
@@ -2173,11 +2166,10 @@ function AdminPage() {
       {/* Toast notification */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 rounded-2xl border px-5 py-3.5 text-sm font-semibold shadow-lg animate-[slideUp_0.3s_ease-out] ${
-            toast.type === "success"
-              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-              : "border-red-200 bg-red-50 text-red-800"
-          }`}
+          className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 rounded-2xl border px-5 py-3.5 text-sm font-semibold shadow-lg animate-[slideUp_0.3s_ease-out] ${toast.type === "success"
+            ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+            : "border-red-200 bg-red-50 text-red-800"
+            }`}
           style={{ animation: "slideUp 0.3s ease-out" }}
         >
           <span>{toast.type === "success" ? "✓" : "✕"}</span>
