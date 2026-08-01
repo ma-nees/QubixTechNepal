@@ -444,8 +444,6 @@ function AdminPage() {
           description,
           category,
           status,
-          uptime,
-          usercount: userCount,
           github_link,
           live_link,
         })
@@ -503,8 +501,6 @@ function AdminPage() {
           description: editingProject.description,
           category: editingProject.category,
           status: editingProject.status,
-          uptime: editingProject.uptime,
-          usercount: editingProject.userCount,
           github_link: editingProject.github_link,
           live_link: editingProject.live_link,
         })
