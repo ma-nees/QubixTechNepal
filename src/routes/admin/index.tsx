@@ -1936,7 +1936,7 @@ function AdminPage() {
                     <div className="rounded-2xl border border-border p-4 bg-background">
                       <div className="font-semibold text-muted-foreground mb-1">Map Embed URL</div>
                       <div
-                        className="font-medium text-ink truncate"
+                        className="font-medium text-ink break-all text-xs"
                         title={companySettings?.map_embed_url}
                       >
                         {companySettings?.map_embed_url || "https://www.google.com/maps?q=Kamalpokhari,+Kathmandu,+Nepal&output=embed (Default)"}
