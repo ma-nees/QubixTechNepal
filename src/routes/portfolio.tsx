@@ -79,7 +79,7 @@ function Portfolio() {
             badge: p.category || "Project",
             copy: p.description || "",
             metric: p.metric || "",
-            status: p.status || "Planned",
+            status: ["Active", "Inactive", "Planned"].includes(p.status) ? p.status : "Active",
             live_link: p.live_link,
             github_link: p.github_link,
           }));
