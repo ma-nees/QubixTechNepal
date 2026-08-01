@@ -138,11 +138,16 @@ IMPORTANT: Guide users to the correct pages on our website based on their questi
 When listing items, use bullet points. Otherwise, use short paragraphs. Keep your formatting clean and readable for a small chat interface.`
       };
 
+      const apiKey = import.meta.env.VITE_MISTRAL_API_KEY;
+      if (!apiKey) {
+        throw new Error("Missing VITE_MISTRAL_API_KEY. Did you save the .env file and restart the server?");
+      }
+
       const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${import.meta.env.VITE_MISTRAL_API_KEY}`
+          "Authorization": `Bearer ${apiKey}`
         },
         body: JSON.stringify({
           model: "mistral-small-latest",
@@ -151,16 +156,17 @@ When listing items, use bullet points. Otherwise, use short paragraphs. Keep you
       });
 
       if (!response.ok) {
-        throw new Error("API request failed");
+        const errorText = await response.text().catch(() => "Unknown error");
+        throw new Error(`HTTP ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
       const botResponse = data.choices[0].message.content;
       
       setMessages(prev => [...prev, { role: "assistant", content: botResponse }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting to my brain right now. Please try again later!" }]);
+      setMessages(prev => [...prev, { role: "assistant", content: `System Error: ${error.message || 'Network request blocked or failed.'}` }]);
     } finally {
       setIsLoading(false);
     }
