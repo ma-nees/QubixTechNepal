@@ -77,6 +77,11 @@ export function FloatingAiAssistant() {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [showGreeting, setShowGreeting] = useState(false);
+  const [popupGreeting, setPopupGreeting] = useState(() => getRandomGreeting(user?.name));
+
+  useEffect(() => {
+    setPopupGreeting(getRandomGreeting(user?.name));
+  }, [user?.name]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -306,7 +311,7 @@ When listing items, use bullet points. Otherwise, use short paragraphs. Keep you
           </button>
           <div className="flex items-start gap-2">
             <p className="font-medium leading-relaxed">
-              {getRandomGreeting(user?.name)}
+              {popupGreeting}
             </p>
           </div>
         </div>
