@@ -80,7 +80,7 @@ function Home() {
         <div className="container-page relative grid items-center gap-8 py-10 sm:gap-12 sm:py-16 lg:grid-cols-[1.05fr_1fr]">
           <div>
             <NepalBadge />
-            <h1 className="mt-4 font-display text-3xl font-extrabold leading-[1.08] text-ink sm:mt-6 sm:text-5xl lg:text-6xl">
+            <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:mt-6 sm:text-5xl lg:text-6xl">
               Building Technology That Moves Nepal Forward.
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
@@ -105,8 +105,8 @@ function Home() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-soft sm:rounded-3xl">
+          <div className="relative mt-2 lg:mt-0">
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-soft sm:rounded-3xl aspect-[4/3] sm:aspect-video lg:aspect-auto lg:h-[500px]">
               <img
                 src={hero}
                 alt="Abstract geometric Himalayan ranges with topographic contour lines"
@@ -119,8 +119,8 @@ function Home() {
           </div>
         </div>
 
-        <div className="container-page relative pb-12 sm:pb-16">
-          <div className="grid grid-cols-2 gap-4 rounded-2xl border border-border bg-surface/70 px-4 py-6 backdrop-blur sm:grid-cols-4 sm:rounded-3xl sm:gap-8 sm:px-10 sm:py-8">
+        <div className="container-page relative pb-10 sm:pb-16">
+          <div className="grid grid-cols-2 gap-3 rounded-2xl border border-border bg-surface/70 px-4 py-5 backdrop-blur sm:grid-cols-4 sm:rounded-3xl sm:gap-8 sm:px-10 sm:py-8">
             <Counter value={100} suffix="+" label="Projects delivered" />
             <Counter value={10} suffix="+" label="Products launched" />
             <Counter value={99} suffix="%" label="Client satisfaction" />
