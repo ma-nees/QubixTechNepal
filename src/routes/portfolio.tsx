@@ -78,7 +78,7 @@ function Portfolio() {
             category: p.category || "SaaS & Enterprise",
             badge: p.category || "Project",
             copy: p.description || "",
-            metric: p.metric || (p.status === "Active" ? "Currently Active" : p.status === "Planned" ? "In Development" : "Currently Inactive"),
+            metric: p.metric || "",
             status: p.status || "Planned",
             live_link: p.live_link,
             github_link: p.github_link,
@@ -164,25 +164,31 @@ function Portfolio() {
                   </p>
                 </div>
 
-                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border/50 pt-4">
-                  <p className="inline-flex rounded-xl bg-secondary/50 px-3 py-1.5 text-xs font-semibold text-ink">
-                    ⚡ {item.metric}
-                  </p>
-                  {(item.live_link || item.github_link) && (
-                    <div className="flex items-center gap-3">
-                      {item.github_link && (
-                        <a href={item.github_link} target="_blank" rel="noreferrer" className="text-xs font-semibold text-muted-foreground transition-colors hover:text-ink">
-                          GitHub
-                        </a>
-                      )}
-                      {item.live_link && (
-                        <a href={item.live_link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-bold text-primary transition-colors hover:text-primary/80">
-                          Visit Site <ArrowRight size={12} className="mt-0.5" />
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
+                {(item.metric || item.live_link || item.github_link) && (
+                  <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border/50 pt-4">
+                    {item.metric ? (
+                      <p className="inline-flex rounded-xl bg-secondary/50 px-3 py-1.5 text-xs font-semibold text-ink">
+                        ⚡ {item.metric}
+                      </p>
+                    ) : (
+                      <div />
+                    )}
+                    {(item.live_link || item.github_link) && (
+                      <div className="flex items-center gap-3">
+                        {item.github_link && (
+                          <a href={item.github_link} target="_blank" rel="noreferrer" className="text-xs font-semibold text-muted-foreground transition-colors hover:text-ink">
+                            GitHub
+                          </a>
+                        )}
+                        {item.live_link && (
+                          <a href={item.live_link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-bold text-primary transition-colors hover:text-primary/80">
+                            Visit Site <ArrowRight size={12} className="mt-0.5" />
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </article>
             </Reveal>
           ))}
