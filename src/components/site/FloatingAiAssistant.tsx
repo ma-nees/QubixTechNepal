@@ -17,6 +17,14 @@ export function FloatingAiAssistant() {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [showGreeting, setShowGreeting] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowGreeting(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     setMessages(prev => {
@@ -231,9 +239,31 @@ When listing items, use bullet points. Otherwise, use short paragraphs. Keep you
         </button>
       </div>
 
+      {/* Greeting Tooltip */}
+      {!isOpen && showGreeting && (
+        <div className="absolute bottom-2 right-16 mr-2 w-48 rounded-2xl rounded-br-sm bg-surface p-3 text-xs text-ink shadow-xl border border-border animate-in slide-in-from-right-4 fade-in duration-500">
+          <button 
+            onClick={() => setShowGreeting(false)} 
+            className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:bg-muted hover:text-ink transition-colors"
+          >
+            <X size={10} />
+          </button>
+          <div className="flex items-start gap-2">
+            <span className="text-xl">👋</span>
+            <p className="font-medium leading-relaxed">
+              {user?.name ? `Hi ${user.name.split(" ")[0]}! ` : "Hi there! "} 
+              I'm the Qubix AI Assistant. Need any help?
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Floating Action Button (AI Assistant) */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          setShowGreeting(false);
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={`group relative flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lift transition-transform duration-300 hover:scale-105 active:scale-95 ${isOpen ? 'rotate-90 scale-90' : 'rotate-0'}`}
