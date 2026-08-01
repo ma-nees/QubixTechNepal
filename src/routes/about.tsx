@@ -94,7 +94,7 @@ function About() {
         <Reveal>
           <SectionHeading eyebrow="Our story" title="From a small studio to a product company" />
         </Reveal>
-        <ol className="mt-8 sm:mt-12 grid gap-5 sm:gap-6 border-l border-border pl-6">
+        <ol className="mt-8 sm:mt-12 ml-3 border-l border-border space-y-8 sm:space-y-12">
           {[
             [
               "2021",
@@ -108,19 +108,19 @@ function About() {
             ],
             [
               "2024",
-              "AI practice",
-              "Automation and intelligence added to the core engineering offering.",
+              "AI & Cloud Practice",
+              "Automation, intelligence, and scalable cloud infrastructure added to our core engineering offering.",
             ],
             [
-              "2026",
-              "DriveSiksha scale-up",
-              "Our flagship product expands across driving institutes nationwide.",
+              "2025",
+              "Global Expansion",
+              "Delivering world-class digital products and enterprise solutions to clients across borders.",
             ],
           ].map(([year, title, copy], i) => (
             <Reveal as="li" key={year} delay={i * 70}>
-              <div className="relative">
+              <div className="relative pl-6 sm:pl-8">
                 <span
-                  className="absolute -left-[31px] top-2 size-2.5 rounded-full bg-primary"
+                  className="absolute -left-1.5 top-1.5 size-3 rounded-full bg-primary ring-4 ring-background"
                   aria-hidden="true"
                 />
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
