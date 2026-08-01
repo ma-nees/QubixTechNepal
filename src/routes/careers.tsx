@@ -29,6 +29,7 @@ interface Vacancy {
   title: string;
   responsibilities: string;
   skills: string;
+  qualifications?: string;
   status: string;
 }
 
@@ -109,12 +110,23 @@ function Careers() {
 
                           <div className="space-y-2">
                             <h4 className="text-sm font-bold text-ink">
-                              Required Skills & Qualifications:
+                              Required Skills:
                             </h4>
                             <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                               {vac.skills}
                             </p>
                           </div>
+
+                          {vac.qualifications && (
+                            <div className="space-y-2">
+                              <h4 className="text-sm font-bold text-ink">
+                                Qualifications:
+                              </h4>
+                              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                {vac.qualifications}
+                              </p>
+                            </div>
+                          )}
                         </div>
 
                         <div className="shrink-0 w-full md:w-auto pt-4 md:pt-0">
