@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Bot, X, Sparkles, Send, Minimize2, Loader2, User } from "lucide-react";
+import { useLocation } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 
 type Message = {
@@ -67,6 +68,7 @@ const getRandomGreeting = (name?: string) => {
 
 
 export function FloatingAiAssistant() {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isWaOpen, setIsWaOpen] = useState(false);
@@ -177,6 +179,10 @@ When listing items, use bullet points. Otherwise, use short paragraphs. Keep you
       handleSend(inputValue);
     }
   };
+
+  if (location.pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
