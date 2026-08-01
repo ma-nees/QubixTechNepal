@@ -730,8 +730,8 @@ function AdminPage() {
           <div className="flex items-center gap-3">
             <img src={logoUrl} alt="Qubix logo" className="h-10 w-10 object-contain" />
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="font-display text-2xl font-extrabold text-ink">Admin Dashboard</h1>
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="font-display text-xl sm:text-2xl font-extrabold text-ink">Admin Dashboard</h1>
                 <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary border border-primary/20">
                   Kathmandu HQ
                 </span>
@@ -1053,15 +1053,15 @@ function AdminPage() {
                     )}
                   </div>
 
-                  <div className="mt-3 flex gap-2">
+                  <div className="mt-4 flex gap-2">
                     <button
-                      className="rounded bg-amber-500 px-2 py-1 text-xs text-white"
+                      className="flex-1 rounded bg-amber-500 px-2 py-1.5 text-xs font-semibold text-white hover:bg-amber-600 transition-colors"
                       onClick={() => editProject(proj.id)}
                     >
                       Edit
                     </button>
                     <button
-                      className="rounded bg-destructive px-2 py-1 text-xs text-white"
+                      className="flex-1 rounded bg-destructive px-2 py-1.5 text-xs font-semibold text-white hover:bg-red-700 transition-colors"
                       onClick={() => deleteProject(proj.id)}
                     >
                       Delete
@@ -1668,15 +1668,15 @@ function AdminPage() {
                       {link.url}
                     </a>
                   </div>
-                  <div className="flex gap-2 shrink-0">
+                  <div className="flex gap-2 shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
                     <button
-                      className="rounded bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-amber-600"
+                      className="flex-1 sm:flex-none rounded bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-amber-600"
                       onClick={() => editSocialLink(link.id)}
                     >
                       Edit
                     </button>
                     <button
-                      className="rounded bg-destructive px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-red-700"
+                      className="flex-1 sm:flex-none rounded bg-destructive px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-red-700"
                       onClick={() => deleteSocialLink(link.id)}
                     >
                       Delete
@@ -1778,13 +1778,13 @@ function AdminPage() {
                         )}
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row items-end md:items-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
                       {app.resume_url && (
                         <a
                           href={app.resume_url}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          className="px-3 py-2 text-center text-xs font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
                         >
                           View Resume
                         </a>
@@ -1798,7 +1798,7 @@ function AdminPage() {
                             .then(() => setToast({ type: "success", message: "Status updated" }))
                             .catch(() => setToast({ type: "error", message: "Failed to update status" }));
                         }}
-                        className="px-3 py-1.5 text-xs rounded-lg border border-border"
+                        className="px-3 py-2 text-xs rounded-lg border border-border"
                       >
                         <option value="new">New</option>
                         <option value="reviewed">Reviewed</option>
@@ -1807,7 +1807,7 @@ function AdminPage() {
                       </select>
                       <button
                         onClick={() => setDeleteApplicationId(app.id)}
-                        className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
+                        className="px-3 py-2 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
                       >
                         Delete
                       </button>
