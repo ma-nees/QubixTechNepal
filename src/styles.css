@@ -129,7 +129,7 @@
   width: 100%;
   margin-inline: auto;
   max-width: 76rem;
-  padding-inline: 0.5rem;
+  padding-inline: 0.25rem;
 
   @media (min-width: 640px) {
     padding-inline: 1rem;
