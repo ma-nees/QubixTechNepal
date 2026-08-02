@@ -19,6 +19,7 @@ export function NepalBadge({ className = "" }: { className?: string }) {
 export function SiteFooter() {
   const [socialLinks, setSocialLinks] = useState<any[]>([]);
   const [companySettings, setCompanySettings] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
@@ -41,6 +42,8 @@ export function SiteFooter() {
         }
       } catch (e) {
         console.warn("Failed to load company settings", e);
+      } finally {
+        setIsLoading(false);
       }
     }
     loadData();
@@ -95,28 +98,40 @@ export function SiteFooter() {
           <ul className="mt-4 grid gap-3 text-muted-foreground">
             <li className="flex items-start gap-2">
               <MapPin size={16} className="mt-0.5 shrink-0 text-primary" />
-              {companySettings?.address || "Kathmandu, Nepal"}
+              {isLoading ? (
+                <div className="mt-1 h-4 w-40 animate-pulse rounded bg-border"></div>
+              ) : (
+                companySettings?.address || "Kathmandu, Nepal"
+              )}
             </li>
-            {(companySettings?.phone1 || "+977 986-6291003") && (
+            {(isLoading || companySettings?.phone1 || "+977 986-6291003") && (
               <li className="flex items-start gap-2">
                 <Phone size={16} className="mt-0.5 shrink-0 text-primary" />
-                <a
-                  href={`tel:${(companySettings?.phone1 || "+977 986-6291003").replace(/[^0-9+]/g, "")}`}
-                  className="hover:text-ink"
-                >
-                  {companySettings?.phone1 || "+977 986-6291003"}
-                </a>
+                {isLoading ? (
+                  <div className="mt-1 h-4 w-32 animate-pulse rounded bg-border"></div>
+                ) : (
+                  <a
+                    href={`tel:${(companySettings?.phone1 || "+977 986-6291003").replace(/[^0-9+]/g, "")}`}
+                    className="hover:text-ink"
+                  >
+                    {companySettings?.phone1 || "+977 986-6291003"}
+                  </a>
+                )}
               </li>
             )}
-            {(companySettings?.phone2 || "+977 986-3479066") && (
+            {(isLoading || companySettings?.phone2 || "+977 986-3479066") && (
               <li className="flex items-start gap-2">
                 <Phone size={16} className="mt-0.5 shrink-0 text-primary" />
-                <a
-                  href={`tel:${(companySettings?.phone2 || "+977 986-3479066").replace(/[^0-9+]/g, "")}`}
-                  className="hover:text-ink"
-                >
-                  {companySettings?.phone2 || "+977 986-3479066"}
-                </a>
+                {isLoading ? (
+                  <div className="mt-1 h-4 w-32 animate-pulse rounded bg-border"></div>
+                ) : (
+                  <a
+                    href={`tel:${(companySettings?.phone2 || "+977 986-3479066").replace(/[^0-9+]/g, "")}`}
+                    className="hover:text-ink"
+                  >
+                    {companySettings?.phone2 || "+977 986-3479066"}
+                  </a>
+                )}
               </li>
             )}
             <li className="flex items-start gap-2">
