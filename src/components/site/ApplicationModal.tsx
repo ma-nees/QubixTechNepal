@@ -47,6 +47,21 @@ export function ApplicationModal({
     }
 
     try {
+      // Check for existing application
+      const { data: existingApps, error: checkError } = await supabase
+        .from("applications")
+        .select("status")
+        .eq("email", email)
+        .eq("job_title", jobTitle);
+
+      if (checkError) throw checkError;
+
+      if (existingApps && existingApps.length > 0) {
+        setErrorMsg(`You have already applied for this position. Your application status is: ${existingApps[0].status || 'Pending'}`);
+        setIsSubmitting(false);
+        return;
+      }
+
       let resumeUrl = "";
 
       // Upload Resume to Supabase Storage
