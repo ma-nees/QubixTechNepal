@@ -77,8 +77,7 @@ VITE_EMAILJS_SERVICE_ID=your_service_id
 VITE_EMAILJS_TEMPLATE_ID=your_template_id
 VITE_EMAILJS_PUBLIC_KEY=your_public_key
 
-# Admin Authorized Email
-VITE_ADMIN_EMAIL=your_admin_email@gmail.com
+
 ```
 
 ### 3. Start Development Server
