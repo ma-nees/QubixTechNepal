@@ -151,7 +151,8 @@ export function SiteFooter() {
 
       <div className="border-t border-border">
         <div className="container-page flex flex-col gap-2 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Qubix Tech Nepal. All rights reserved.</p>
+          {/* <p>© {new Date().getFullYear()} Qubix Tech Nepal. All rights reserved.</p> */}
+          <p>© 2021 Qubix Tech Nepal. All rights reserved.</p>
           <p>Kathmandu · Nepal</p>
         </div>
       </div>
